@@ -13,7 +13,7 @@ const cardVariants = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { delay: 0.1 + i * 0.08, duration: 0.6, ease: [0.25, 0.4, 0.25, 1] },
+    transition: { delay: 0.1 + i * 0.08, duration: 0.6, ease: [0.25, 0.4, 0.25, 1] as [number, number, number, number] },
   }),
 };
 
