@@ -3,107 +3,120 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   DESIGN SYSTEM — "Dark Editorial"
-   A single emerald brand accent on a deep green-black canvas, with Fraunces
-   (serif) for display and Inter for UI. Every surface, border and text colour
-   is a token so light and dark are both fully designed.
+   DESIGN SYSTEM — "Playful Modern" (see DESIGN.md)
+   Bold indigo + warm yellow on white / off-white, Poppins throughout, rounded
+   cards, soft shadows and hand-drawn doodle accents. Every surface, border and
+   text colour is a token so light and dark are both fully designed.
    All colour values MUST be HSL triplets.
    ========================================================================== */
 
 @layer base {
   :root {
-    --background: 150 20% 99%;
-    --foreground: 165 32% 9%;
+    --background: 0 0% 100%;
+    --foreground: 231 13% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 165 32% 9%;
+    --card-foreground: 231 13% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 165 32% 9%;
+    --popover-foreground: 231 13% 20%;
 
-    --primary: 158 72% 26%;
-    --primary-foreground: 150 40% 98%;
+    /* Brand indigo — hero background, highlighted cards, icons, eyebrows */
+    --primary: 240 60% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 152 20% 95%;
-    --secondary-foreground: 165 32% 14%;
+    --secondary: 258 39% 94%;
+    --secondary-foreground: 231 13% 20%;
 
-    --muted: 150 16% 95%;
-    --muted-foreground: 162 12% 40%;
+    --muted: 0 0% 97%;
+    --muted-foreground: 240 6% 35%;
 
-    --accent: 152 30% 93%;
-    --accent-foreground: 165 32% 12%;
+    --accent: 37 89% 62%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 48%;
-    --destructive-foreground: 150 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
     /* Borders are visible enough to define a surface, and `--input` clears the
        3:1 non-text contrast bar (WCAG 1.4.11) so form fields are identifiable. */
-    --border: 155 18% 78%;
-    --input: 155 16% 52%;
-    --ring: 158 72% 30%;
+    --border: 240 9% 81%;
+    --input: 240 4% 56%;
+    --ring: 37 89% 62%;
 
-    /* Brand + elevation ramp */
-    --brand: 158 72% 30%;
-    --brand-soft: 152 45% 92%;
-    --brand-ink: 158 60% 20%;
+    /* Brand ramp — indigo, its hover, tints and the lavender/peach card fills */
+    --brand: 240 60% 60%;
+    --brand-dark: 240 48% 52%;
+    --brand-light: 241 58% 78%;
+    --brand-soft: 258 39% 94%;
+    --brand-ink: 240 48% 52%;
+    --accent-dark: 37 76% 54%;
+    --accent-tint: 31 77% 93%;
+    --star: 45 80% 55%;
+
     --surface: 0 0% 100%;
-    --surface-2: 150 18% 97%;
+    --surface-2: 0 0% 97%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 150 20% 98%;
-    --sidebar-foreground: 165 32% 12%;
-    --sidebar-primary: 158 72% 26%;
-    --sidebar-primary-foreground: 150 40% 98%;
-    --sidebar-accent: 152 25% 93%;
-    --sidebar-accent-foreground: 165 32% 12%;
-    --sidebar-border: 155 18% 82%;
-    --sidebar-ring: 158 72% 30%;
+    --sidebar-background: 258 39% 97%;
+    --sidebar-foreground: 231 13% 20%;
+    --sidebar-primary: 240 60% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 258 39% 93%;
+    --sidebar-accent-foreground: 231 13% 20%;
+    --sidebar-border: 240 9% 85%;
+    --sidebar-ring: 37 89% 62%;
   }
 
   .dark {
-    --background: 165 32% 4%;
-    --foreground: 150 22% 96%;
+    --background: 235 25% 10%;
+    --foreground: 236 20% 96%;
 
-    --card: 165 26% 6.5%;
-    --card-foreground: 150 22% 96%;
+    --card: 236 25% 14%;
+    --card-foreground: 236 20% 96%;
 
-    --popover: 165 26% 6.5%;
-    --popover-foreground: 150 22% 96%;
+    --popover: 236 25% 14%;
+    --popover-foreground: 236 20% 96%;
 
-    --primary: 152 72% 48%;
-    --primary-foreground: 165 40% 6%;
+    --primary: 240 60% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 165 16% 12%;
-    --secondary-foreground: 150 20% 94%;
+    --secondary: 236 28% 20%;
+    --secondary-foreground: 236 20% 96%;
 
-    --muted: 165 16% 12%;
-    --muted-foreground: 156 12% 64%;
+    --muted: 235 20% 18%;
+    --muted-foreground: 236 10% 73%;
 
-    --accent: 165 18% 15%;
-    --accent-foreground: 150 20% 96%;
+    --accent: 37 89% 62%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 50%;
-    --destructive-foreground: 150 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 165 16% 19%;
-    --input: 165 14% 34%;
-    --ring: 152 72% 48%;
+    --border: 235 19% 29%;
+    --input: 235 10% 46%;
+    --ring: 37 89% 62%;
 
-    --brand: 152 72% 48%;
-    --brand-soft: 160 40% 12%;
-    --brand-ink: 152 70% 70%;
-    --surface: 165 26% 6.5%;
-    --surface-2: 165 20% 9%;
+    --brand: 240 60% 60%;
+    --brand-dark: 240 48% 52%;
+    --brand-light: 241 58% 78%;
+    --brand-soft: 236 28% 20%;
+    --brand-ink: 241 68% 78%;
+    --accent-dark: 37 76% 54%;
+    --accent-tint: 236 26% 18%;
+    --star: 45 80% 55%;
 
-    --sidebar-background: 165 30% 5%;
-    --sidebar-foreground: 150 20% 95%;
-    --sidebar-primary: 152 72% 48%;
-    --sidebar-primary-foreground: 165 40% 6%;
-    --sidebar-accent: 165 18% 15%;
-    --sidebar-accent-foreground: 150 20% 95%;
-    --sidebar-border: 165 16% 19%;
-    --sidebar-ring: 152 72% 48%;
+    --surface: 236 25% 14%;
+    --surface-2: 234 24% 17%;
+
+    --sidebar-background: 235 25% 11%;
+    --sidebar-foreground: 236 20% 95%;
+    --sidebar-primary: 240 60% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 236 26% 19%;
+    --sidebar-accent-foreground: 236 20% 95%;
+    --sidebar-border: 235 19% 24%;
+    --sidebar-ring: 37 89% 62%;
   }
 }
 
@@ -143,12 +156,12 @@
     text-wrap: pretty;
   }
 
-  /* Fluid vertical rhythm: 80px on a phone, 144px on a wide desktop. */
+  /* Fluid vertical rhythm: 64px on a phone, 120px on a wide desktop. */
   .section-rhythm {
-    padding-block: clamp(5rem, 3.2rem + 7.5vw, 9rem);
+    padding-block: clamp(4rem, 3rem + 5vw, 7.5rem);
   }
 
-  /* Large display type gets a slightly looser cap-height for comfort */
+  /* Display type gets a slightly looser cap-height for comfort */
   .font-display {
     font-feature-settings: "kern", "liga";
   }
@@ -178,7 +191,7 @@
 }
 
 @layer components {
-  /* Premium film-grain texture, sits above flat fills and below content */
+  /* Fine film-grain texture, sits above flat fills and below content */
   .grain::after {
     content: "";
     position: absolute;
@@ -193,13 +206,27 @@
     opacity: 0.22;
   }
 
-  /* Hairline panel — the workhorse surface for cards */
+  /* Rounded card — the workhorse surface, 24px radius, very soft shadow */
   .panel {
     @apply rounded-2xl border border-border bg-card;
+    box-shadow: 0 10px 30px rgba(45, 47, 58, 0.06);
+  }
+
+  .dark .panel {
+    box-shadow: none;
   }
 
   .panel-hover {
-    @apply transition-all duration-500 hover:border-primary/40;
+    @apply transition-all duration-300;
+  }
+
+  .panel-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 34px rgba(45, 47, 58, 0.1);
+  }
+
+  .dark .panel-hover:hover {
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
   }
 
   /* Cursor-following spotlight. `--glow-x` / `--glow-y` are written by
@@ -219,7 +246,7 @@
     pointer-events: none;
     background: radial-gradient(
       22rem 22rem circle at var(--glow-x, 50%) var(--glow-y, 0%),
-      hsl(var(--brand) / 0.16),
+      hsl(var(--brand) / 0.14),
       transparent 70%
     );
     transition: opacity 400ms ease;
@@ -232,9 +259,62 @@
     }
   }
 
-  /* Small uppercase label used for eyebrows, tags and metadata */
+  /* Section eyebrow: uppercase, indigo, semibold — the label above every H2 */
   .eyebrow {
-    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground;
+    @apply text-[13px] font-semibold uppercase tracking-[0.08em] text-brand sm:text-base;
+  }
+
+  /* ---------- Decorative backgrounds (all pointer-events-none) ---------- */
+
+  /* Topographic contour rings: two overlapping sets of concentric circles,
+     faint white on the hero, faint ink on light sections. */
+  .topo-lines {
+    background-image:
+      repeating-radial-gradient(
+        circle at 18% 20%,
+        transparent 0 46px,
+        rgba(255, 255, 255, 0.07) 46px 48px
+      ),
+      repeating-radial-gradient(
+        circle at 82% 78%,
+        transparent 0 62px,
+        rgba(255, 255, 255, 0.06) 62px 64px
+      );
+  }
+
+  .topo-lines-soft {
+    background-image:
+      repeating-radial-gradient(
+        circle at 12% 18%,
+        transparent 0 54px,
+        hsl(var(--foreground) / 0.045) 54px 56px
+      ),
+      repeating-radial-gradient(
+        circle at 88% 84%,
+        transparent 0 70px,
+        hsl(var(--foreground) / 0.04) 70px 72px
+      );
+  }
+
+  /* Halftone dot grid that fades out along a diagonal */
+  .halftone {
+    background-image: radial-gradient(
+      circle,
+      hsl(var(--brand) / 0.28) 1.5px,
+      transparent 1.6px
+    );
+    background-size: 15px 15px;
+    -webkit-mask-image: radial-gradient(ellipse at bottom right, black, transparent 70%);
+    mask-image: radial-gradient(ellipse at bottom right, black, transparent 70%);
+  }
+
+  /* Faint diagonal rounded bars used behind the credentials band */
+  .diag-bars {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      hsl(var(--foreground) / 0.05) 0 26px,
+      transparent 26px 62px
+    );
   }
 }
 
@@ -243,13 +323,9 @@
     @apply bg-gradient-to-br from-foreground via-foreground to-foreground/55 bg-clip-text text-transparent;
   }
 
-  .text-gradient-emerald {
-    @apply bg-gradient-to-br from-brand via-brand to-brand/60 bg-clip-text text-transparent;
-  }
-
-  /* Soft emerald bloom behind hero / CTA areas */
+  /* Soft indigo bloom behind hero / CTA areas */
   .glow-brand {
-    box-shadow: 0 0 0 1px hsl(var(--brand) / 0.12), 0 24px 80px -32px hsl(var(--brand) / 0.55);
+    box-shadow: 0 0 0 1px hsl(var(--brand) / 0.14), 0 24px 80px -32px hsl(var(--brand) / 0.55);
   }
 
   .glow-brand-sm {
@@ -273,6 +349,35 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  /* Gentle loops for floating chips and doodles (killed by reduced-motion) */
+  .float-slow {
+    animation: float-y 5s ease-in-out infinite;
+  }
+
+  .float-slower {
+    animation: float-y 6.5s ease-in-out infinite;
+  }
+
+  .spin-slow {
+    animation: spin-ring 24s linear infinite;
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes spin-ring {
+  to {
+    transform: rotate(360deg);
   }
 }
 

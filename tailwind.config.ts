@@ -47,15 +47,15 @@ export default {
         "7xl": ["clamp(3.5rem, 1.915rem + 6.761vw, 8rem)", "1"],
         "8xl": ["clamp(4rem, 1.887rem + 9.015vw, 10rem)", "1"],
         "9xl": ["clamp(4.5rem, 1.859rem + 11.268vw, 12rem)", "1"],
-        // Wordmark-scale type, used for the hero name
-        display: ["clamp(3rem, 2.208rem + 3.38vw, 5.25rem)", "0.94"],
+        // Wordmark-scale type, used for the hero name (40px mobile → 72px desktop)
+        display: ["clamp(2.5rem, 1.875rem + 3.38vw, 4.5rem)", "1.15"],
       },
       fontFamily: {
-        // Display: editorial serif, used for headings and the wordmark
-        display: ['"Fraunces"', "ui-serif", "Georgia", "serif"],
-        serif: ['"Fraunces"', "ui-serif", "Georgia", "serif"],
-        // UI + body
-        sans: ['"Inter"', "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+        // Friendly geometric sans, used for headings, nav and buttons (DESIGN.md §3)
+        display: ['"Poppins"', "system-ui", "sans-serif"],
+        serif: ['"Poppins"', "system-ui", "sans-serif"],
+        // UI + body — Poppins everywhere, per spec
+        sans: ['"Poppins"', "system-ui", "-apple-system", "sans-serif"],
         mono: [
           "ui-monospace",
           "SFMono-Regular",
@@ -86,10 +86,6 @@ export default {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -98,12 +94,21 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Brand ramp — the single emerald accent
+        // Brand ramp — indigo + yellow accent (DESIGN.md §2)
         brand: {
           DEFAULT: "hsl(var(--brand))",
+          dark: "hsl(var(--brand-dark))",
+          light: "hsl(var(--brand-light))",
           soft: "hsl(var(--brand-soft))",
           ink: "hsl(var(--brand-ink))",
         },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          dark: "hsl(var(--accent-dark))",
+          tint: "hsl(var(--accent-tint))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        star: "hsl(var(--star))",
         surface: {
           DEFAULT: "hsl(var(--surface))",
           2: "hsl(var(--surface-2))",
@@ -128,11 +133,13 @@ export default {
         "3xl": "calc(var(--radius) + 1.25rem)",
       },
       boxShadow: {
-        glow: "0 0 0 1px hsl(var(--brand) / 0.12), 0 24px 80px -32px hsl(var(--brand) / 0.55)",
+        glow: "0 0 0 1px hsl(var(--brand) / 0.14), 0 24px 80px -32px hsl(var(--brand) / 0.55)",
         "glow-sm": "0 8px 30px -12px hsl(var(--brand) / 0.5)",
-        card: "0 1px 2px 0 hsl(var(--foreground) / 0.04)",
-        "card-lift":
-          "0 1px 2px 0 hsl(var(--foreground) / 0.05), 0 16px 40px -20px hsl(var(--brand) / 0.35)",
+        // Yellow CTA lift (DESIGN.md §6)
+        "accent-glow": "0 8px 20px rgba(244, 178, 70, 0.4)",
+        card: "0 10px 30px rgba(45, 47, 58, 0.06)",
+        "card-lift": "0 12px 40px rgba(45, 47, 58, 0.1)",
+        chip: "0 8px 24px rgba(45, 47, 58, 0.12)",
       },
       maxWidth: {
         prose: "68ch",

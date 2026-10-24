@@ -9,9 +9,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        /* Primary emerald CTA with a soft bloom on hover */
+        /* Primary CTA: warm yellow pill, lifts on hover (DESIGN.md §6) */
         brand:
-          "bg-primary text-primary-foreground shadow-glow-sm hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-glow active:translate-y-0",
+          "bg-accent text-accent-foreground hover:-translate-y-0.5 hover:bg-accent-dark hover:shadow-accent-glow active:translate-y-0",
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:

@@ -32,10 +32,12 @@ describe("asset and metadata references", () => {
     }
   });
 
-  it("gives every viewport a single dark background colour to avoid a white flash", () => {
+  it("declares a browser chrome colour for both the light and dark palettes", () => {
     const html = read("index.html");
     expect(html).toContain('name="theme-color"');
-    expect(html).toMatch(/name="theme-color"[\s\S]{0,80}#060b09/i);
+    // The indigo dark surface and the white canvas of the design system
+    expect(html).toMatch(/name="theme-color"[^>]*#131420/i);
+    expect(html).toMatch(/name="theme-color"[^>]*#ffffff/i);
   });
 
   it("declares a sitemap in robots.txt", () => {

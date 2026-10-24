@@ -39,7 +39,7 @@ const SectionHeading = ({
         {eyebrow && (
           <div
             className={cn(
-              "eyebrow mb-4 flex items-center gap-3",
+              "eyebrow mb-5 flex items-center gap-3",
               isCentered && "justify-center"
             )}
           >
@@ -49,7 +49,7 @@ const SectionHeading = ({
         )}
         <h2
           className={cn(
-            "font-display text-3xl font-semibold leading-[1.1] tracking-tightest text-foreground sm:text-4xl lg:text-5xl"
+            "font-display text-3xl font-bold leading-[1.2] tracking-tight text-foreground sm:text-4xl"
           )}
         >
           {title}

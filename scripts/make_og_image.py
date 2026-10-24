@@ -1,8 +1,8 @@
 """Generates the 1200x630 social share image (og:image).
 
 Composed with PIL from system fonts so it renders identically everywhere and
-needs no network fetch at build time. Mirrors the site's dark editorial look:
-green-black canvas, emerald accent, serif name, sans support line.
+needs no network fetch at build time. Mirrors the site's indigo dark variant:
+deep indigo-navy canvas, yellow accents, bold geometric name, sans support line.
 
 Layout is flow-based off measured glyph bounding boxes rather than hardcoded
 offsets, so nothing collides if the fonts or sizes change.
@@ -14,17 +14,16 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 OUT = os.path.join(os.path.dirname(__file__), "..", "public")
 
 W, H = 1200, 630
-BG = (6, 11, 9)  # #060b09
-SURFACE = (13, 24, 20)  # #0d1814
-HAIRLINE = (28, 45, 38)  # #1c2d26
-ACCENT = (52, 211, 153)  # #34d399
-ACCENT_DEEP = (16, 185, 129)  # #10b981
-INK = (240, 247, 244)  # near-white
-INK_SOFT = (168, 189, 180)  # muted
-INK_FAINT = (122, 143, 134)  # faintest
+BG = (19, 20, 32)  # #131420 deep indigo-navy canvas
+SURFACE = (26, 27, 43)  # #1a1b2b
+HAIRLINE = (47, 49, 69)  # #2f3145
+ACCENT = (91, 91, 214)  # #5b5bd6 indigo
+ACCENT_DEEP = (74, 74, 192)  # #4a4ac0
+ACCENT_WARM = (244, 178, 70)  # #f4b246 warm yellow
+INK = (244, 244, 247)  # near-white
+INK_SOFT = (180, 181, 194)  # muted
+INK_FAINT = (138, 140, 158)  # faintest
 
-SERIF = "/System/Library/Fonts/Supplemental/Georgia.ttf"
-SERIF_ITALIC = "/System/Library/Fonts/Supplemental/Georgia Italic.ttf"
 SANS = "/System/Library/Fonts/Supplemental/Arial.ttf"
 SANS_BOLD = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
 
@@ -77,17 +76,17 @@ def pill(d, x, y, text, f, pad=(24, 13), fill=SURFACE, fg=ACCENT, outline=HAIRLI
 def main() -> None:
     img = Image.new("RGB", (W, H), BG)
 
-    # Ambient emerald bloom, top-left, like the hero
-    paste_glow(img, 900, ACCENT_DEEP, 60, (-260, -340))
-    paste_glow(img, 760, (16, 90, 70), 44, (W - 430, H - 400))
+    # Ambient indigo bloom, top-left, like the hero
+    paste_glow(img, 900, ACCENT, 70, (-260, -340))
+    paste_glow(img, 760, (58, 58, 128), 48, (W - 430, H - 400))
 
     # Hairline grid
     grid = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     gd = ImageDraw.Draw(grid)
     for x in range(0, W, 68):
-        gd.line([(x, 0), (x, H)], fill=(240, 247, 244, 10), width=1)
+        gd.line([(x, 0), (x, H)], fill=(244, 244, 247, 10), width=1)
     for y in range(0, H, 68):
-        gd.line([(0, y), (W, y)], fill=(240, 247, 244, 10), width=1)
+        gd.line([(0, y), (W, y)], fill=(244, 244, 247, 10), width=1)
     img.paste(grid, (0, 0), grid)
 
     d = ImageDraw.Draw(img)
@@ -99,17 +98,27 @@ def main() -> None:
     d.text((MARGIN, y), "DEEPAK", font=brand_f, fill=INK)
     trace.append(("wordmark", y, y + brand_f.size))
     x = MARGIN + d.textlength("DEEPAK", font=brand_f)
-    d.text((x + 7, y), ".", font=brand_f, fill=ACCENT)
+    d.text((x + 7, y), ".", font=brand_f, fill=ACCENT_WARM)
     d.text((x + 19, y), "KUMAR", font=brand_f, fill=INK)
 
     # ---- Availability pill (top right) ----
     pill_f = font(SANS_BOLD, 20)
     pill_text = "AVAILABLE FOR HIRE"
-    pill(d, W - MARGIN - int(d.textlength(pill_text, font=pill_f) + 48), 54, pill_text, pill_f)
+    pill(
+        d,
+        W - MARGIN - int(d.textlength(pill_text, font=pill_f) + 48),
+        54,
+        pill_text,
+        pill_f,
+        fill=SURFACE,
+        fg=ACCENT_WARM,
+        outline=HAIRLINE,
+    )
 
     # ---- Measure the whole stack, then place it as one block ----
-    name_f = font(SERIF, NAME_SIZE)
-    name_italic_f = font(SERIF_ITALIC, NAME_SIZE)
+    # The display face is now the geometric sans of the design system
+    name_f = font(SANS_BOLD, NAME_SIZE)
+    name_italic_f = name_f
     role_f = font(SANS, 33)
     sub_f = font(SANS, 25)
 
@@ -133,7 +142,7 @@ def main() -> None:
     trace.append(("Deepak", y, y + h_first))
     y += h_first + GAP_NAME
 
-    # ---- Name, second line, with an emerald vertical gradient ----
+    # ---- Name, second line, with an indigo vertical gradient ----
     grad_h = int(h_last * 1.7)
     grad = Image.new("RGB", (760, grad_h), ACCENT)
     gd2 = ImageDraw.Draw(grad)
@@ -179,7 +188,7 @@ def main() -> None:
     d.line([(MARGIN, H - 80), (W - MARGIN, H - 80)], fill=HAIRLINE, width=2)
     link_f = font(SANS, 23)
     _, oy, _, _ = text_extents(d, "dk1s", link_f)
-    d.text((MARGIN, H - 60 - oy), "dk1s.github.io/Portfolio", font=link_f, fill=ACCENT)
+    d.text((MARGIN, H - 60 - oy), "dk1s.github.io/Portfolio", font=link_f, fill=ACCENT_WARM)
     right = "deepakkumarplacee@gmail.com"
     d.text(
         (W - MARGIN - d.textlength(right, font=link_f), H - 60 - oy),

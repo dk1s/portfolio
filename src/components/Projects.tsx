@@ -11,9 +11,9 @@ import { usePointerGlow } from "@/hooks/usePointerGlow";
 import { cn } from "@/lib/utils";
 
 const badgeTone: Record<string, string> = {
-  Professional: "border-primary/25 bg-primary/10 text-brand",
-  Personal: "border-border bg-muted text-muted-foreground",
-  Academic: "border-border bg-muted text-muted-foreground",
+  Professional: "bg-accent-tint text-foreground",
+  Personal: "bg-secondary text-muted-foreground",
+  Academic: "bg-secondary text-muted-foreground",
 };
 
 interface ProjectCardProps {
@@ -43,16 +43,16 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         ref={glow.ref}
         onPointerMove={glow.onPointerMove}
         onPointerLeave={glow.onPointerLeave}
-        className="panel panel-hover panel-glow flex h-full flex-col overflow-hidden transition-transform duration-500 group-hover:-translate-y-1 group-hover:shadow-card-lift"
+        className="panel panel-hover panel-glow flex h-full flex-col overflow-hidden border-0 bg-surface-2"
       >
-        {/* Header band */}
-        <div className="relative flex items-start justify-between gap-3 border-b border-border bg-surface-2 p-5">
-          <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-brand transition-colors duration-500 group-hover:bg-primary group-hover:text-primary-foreground">
+        {/* Header band — turns indigo on hover, like a highlighted card */}
+        <div className="relative flex items-start justify-between gap-3 bg-primary/10 p-5 transition-colors duration-300 group-hover:bg-primary">
+          <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white transition-colors duration-300 group-hover:bg-white group-hover:text-brand">
             <ProjectIcon name={project.icon} className="h-5 w-5" />
           </span>
           <span
             className={cn(
-              "rounded-full border px-2.5 py-1 text-xs font-medium",
+              "rounded-full px-3 py-1 text-xs font-medium",
               badgeTone[project.type] ?? badgeTone.Personal
             )}
           >
@@ -61,10 +61,10 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         </div>
 
         <div className="flex flex-1 flex-col p-5">
-          <h3 className="flex items-start justify-between gap-2 font-display text-lg font-semibold leading-snug text-foreground">
+          <h3 className="flex items-start justify-between gap-2 font-display text-xl font-semibold leading-snug text-foreground">
             {project.title}
             <ArrowUpRight
-              className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand"
+              className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand"
               aria-hidden="true"
             />
           </h3>
@@ -78,7 +78,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
               {project.highlights.map((highlight) => (
                 <li
                   key={highlight}
-                  className="rounded-md bg-muted px-2 py-1 text-xs font-medium text-foreground/85"
+                  className="rounded-lg bg-card px-2.5 py-1 text-xs font-medium text-foreground/85"
                 >
                   {highlight}
                 </li>
@@ -155,11 +155,13 @@ const Projects = () => {
         eyebrow="02 — Selected work"
         title="Projects I've shipped"
         description="Production work across logistics, sports, events and fintech — built with React, Next.js and TypeScript, with the state management and API work that real products need."
+        align="center"
+        className="mb-12 sm:mb-16"
         action={
           <div
             role="group"
             aria-label="Filter projects by type"
-            className="flex flex-wrap gap-2"
+            className="flex flex-wrap justify-center gap-2"
           >
             {types.map((type) => (
               <button
@@ -168,10 +170,10 @@ const Projects = () => {
                 aria-pressed={activeType === type}
                 onClick={() => setActiveType(type)}
                 className={cn(
-                  "rounded-full border px-4 py-1.5 text-sm font-medium transition-all duration-300",
+                  "rounded-full px-5 py-2 text-sm font-medium transition-all duration-300",
                   activeType === type
-                    ? "border-primary/30 bg-primary/10 text-brand"
-                    : "border-border text-muted-foreground hover:border-primary/30 hover:text-foreground"
+                    ? "bg-accent text-accent-foreground shadow-accent-glow"
+                    : "bg-card text-muted-foreground shadow-card hover:text-foreground"
                 )}
               >
                 {type}
@@ -181,7 +183,7 @@ const Projects = () => {
         }
       />
 
-      <motion.ul layout className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <motion.ul layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <AnimatePresence mode="popLayout">
           {visibleProjects.map((project, index) => (
             <ProjectCard key={project.title} project={project} index={index} />
@@ -190,7 +192,7 @@ const Projects = () => {
       </motion.ul>
 
       <SectionReveal delay={0.1} className="mt-12 flex justify-center">
-        <Button variant="outline" size="lg" asChild>
+        <Button variant="brand" size="lg" asChild>
           <a href={hero.githubUrl} target="_blank" rel="noopener noreferrer">
             <Github className="h-4 w-4" />
             See everything on GitHub

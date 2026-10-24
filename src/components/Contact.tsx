@@ -112,6 +112,8 @@ const Contact = () => {
         eyebrow="05 — Contact"
         title="Let's build something"
         description="Hiring, freelance work, or just a question about an approach — send a message and it reaches my inbox directly."
+        align="center"
+        className="mb-12 sm:mb-16"
       />
 
       <div className="grid gap-6 lg:grid-cols-12">
@@ -130,7 +132,7 @@ const Contact = () => {
             <ul className="mt-8 space-y-4">
               {details.map((detail) => (
                 <li key={detail.label} className="flex items-center gap-3.5">
-                  <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border bg-surface-2 text-brand">
+                  <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-white">
                     <detail.icon className="h-4 w-4" aria-hidden="true" />
                   </span>
                   <div className="min-w-0">
@@ -171,7 +173,7 @@ const Contact = () => {
                   exit={{ opacity: 0 }}
                   className="flex min-h-[26rem] flex-col items-center justify-center text-center"
                 >
-                  <span className="inline-flex h-16 w-16 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-brand">
+                  <span className="inline-flex h-16 w-16 items-center justify-center rounded-full border-2 border-dashed border-accent bg-primary text-white">
                     <CheckCircle2 className="h-7 w-7" aria-hidden="true" />
                   </span>
                   <h3 className="mt-6 font-display text-2xl font-semibold text-foreground">
@@ -209,7 +211,7 @@ const Contact = () => {
                         aria-invalid={Boolean(errors.name)}
                         aria-describedby={errors.name ? "name-error" : undefined}
                         className={cn(
-                          "h-12 rounded-lg bg-surface-2",
+                          "h-12 rounded-lg border-input bg-surface-2 focus-visible:ring-primary",
                           errors.name && "border-destructive focus-visible:ring-destructive"
                         )}
                       />
@@ -235,7 +237,7 @@ const Contact = () => {
                         aria-invalid={Boolean(errors.email)}
                         aria-describedby={errors.email ? "email-error" : undefined}
                         className={cn(
-                          "h-12 rounded-lg bg-surface-2",
+                          "h-12 rounded-lg border-input bg-surface-2 focus-visible:ring-primary",
                           errors.email && "border-destructive focus-visible:ring-destructive"
                         )}
                       />
@@ -260,7 +262,7 @@ const Contact = () => {
                       aria-invalid={Boolean(errors.subject)}
                       aria-describedby={errors.subject ? "subject-error" : undefined}
                       className={cn(
-                        "h-12 rounded-lg bg-surface-2",
+                        "h-12 rounded-lg border-input bg-surface-2 focus-visible:ring-primary",
                         errors.subject && "border-destructive focus-visible:ring-destructive"
                       )}
                     />
@@ -285,7 +287,7 @@ const Contact = () => {
                       aria-invalid={Boolean(errors.message)}
                       aria-describedby={errors.message ? "message-error" : undefined}
                       className={cn(
-                        "resize-y rounded-lg bg-surface-2",
+                        "resize-y rounded-lg border-input bg-surface-2 focus-visible:ring-primary",
                         errors.message && "border-destructive focus-visible:ring-destructive"
                       )}
                     />

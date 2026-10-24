@@ -50,7 +50,7 @@ const Navbar = () => {
     <>
       {/* Reading-progress bar */}
       <motion.div
-        className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-primary"
+        className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-accent"
         style={{ scaleX: scrollProgress }}
         aria-hidden="true"
       />
@@ -60,10 +60,8 @@ const Navbar = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-all duration-500",
-          isScrolled
-            ? "border-b border-border/80 bg-background/75 shadow-card backdrop-blur-xl"
-            : "border-b border-transparent bg-transparent"
+          "fixed inset-x-0 top-0 z-50 bg-primary transition-all duration-500",
+          isScrolled ? "shadow-[0_10px_30px_rgba(45,47,58,0.12)]" : "shadow-none"
         )}
       >
         <div className="container mx-auto">
@@ -73,7 +71,7 @@ const Navbar = () => {
               isScrolled ? "h-16" : "h-20"
             )}
           >
-            <Wordmark asLink />
+            <Wordmark asLink onDark />
 
             {/* Desktop navigation */}
             <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
@@ -85,19 +83,12 @@ const Navbar = () => {
                     onClick={() => handleNavigate(item.href)}
                     aria-current={isActive ? "true" : undefined}
                     className={cn(
-                      "relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300",
+                      "relative rounded-full px-4 py-2 text-[17px] font-medium transition-colors duration-300",
                       isActive
-                        ? "text-foreground"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "text-accent"
+                        : "text-white/85 hover:text-white"
                     )}
                   >
-                    {isActive && (
-                      <motion.span
-                        layoutId="nav-active-pill"
-                        className="absolute inset-0 -z-10 rounded-full bg-primary/10 ring-1 ring-inset ring-primary/20"
-                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                      />
-                    )}
                     {item.label}
                   </button>
                 );
@@ -106,25 +97,37 @@ const Navbar = () => {
 
             {/* Desktop actions */}
             <div className="hidden items-center gap-2.5 lg:flex">
-              <AvailabilityBadge label={data.hero.availability} size="sm" className="mr-1" />
-              <ThemeToggle />
-              <Button variant="outline" size="sm" asChild>
+              <AvailabilityBadge
+                label={data.hero.availability}
+                size="sm"
+                tone="on-dark"
+                className="mr-1"
+              />
+              <ThemeToggle className="text-white hover:bg-white/10 hover:text-white" />
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-white/40 bg-transparent text-white backdrop-blur-sm hover:border-white/70 hover:bg-white/10 hover:text-white"
+                onClick={() => handleNavigate("#contact")}
+              >
+                Hire me
+              </Button>
+              {/* The spec's pill CTA: the résumé download */}
+              <Button variant="brand" size="sm" asChild>
                 <a href={RESUME_HREF} download="DeepakKumar_Resume.pdf">
                   <Download className="h-3.5 w-3.5" />
                   Résumé
                 </a>
               </Button>
-              <Button variant="brand" size="sm" onClick={() => handleNavigate("#contact")}>
-                Hire me
-              </Button>
             </div>
 
             {/* Mobile trigger */}
             <div className="flex items-center gap-1 lg:hidden">
-              <ThemeToggle />
+              <ThemeToggle className="text-white hover:bg-white/10 hover:text-white" />
               <Button
                 variant="ghost"
                 size="icon"
+                className="text-white hover:bg-white/10 hover:text-white"
                 onClick={() => setIsMobileMenuOpen((open) => !open)}
                 aria-expanded={isMobileMenuOpen}
                 aria-controls="mobile-navigation"
@@ -146,7 +149,7 @@ const Navbar = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-40 bg-primary lg:hidden"
           >
             <div className="container mx-auto flex h-full flex-col justify-between pb-10 pt-28">
               <nav className="flex flex-col" aria-label="Mobile">
@@ -160,12 +163,12 @@ const Navbar = () => {
                       transition={{ delay: 0.05 + index * 0.05, duration: 0.4 }}
                       onClick={() => handleNavigate(item.href)}
                       className={cn(
-                        "flex items-center justify-between border-b border-border/60 py-5 text-left font-display text-2xl font-medium transition-colors",
-                        isActive ? "text-brand" : "text-foreground hover:text-brand"
+                        "flex items-center justify-between border-b border-white/15 py-5 text-left font-display text-2xl font-medium transition-colors",
+                        isActive ? "text-accent" : "text-white hover:text-accent"
                       )}
                     >
                       {item.label}
-                      <span className="text-xs font-sans tabular-nums text-muted-foreground">
+                      <span className="text-xs font-sans tabular-nums text-white/60">
                         0{index + 1}
                       </span>
                     </motion.button>
@@ -179,12 +182,21 @@ const Navbar = () => {
                 transition={{ delay: 0.3, duration: 0.4 }}
                 className="space-y-4"
               >
-                <AvailabilityBadge label={data.hero.availability} className="w-fit" />
+                <AvailabilityBadge
+                  label={data.hero.availability}
+                  tone="on-dark"
+                  className="w-fit"
+                />
                 <div className="flex flex-col gap-2.5">
                   <Button variant="brand" size="lg" onClick={() => handleNavigate("#contact")}>
                     Hire me
                   </Button>
-                  <Button variant="outline" size="lg" asChild>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="border-white/40 bg-transparent text-white hover:border-white/70 hover:bg-white/10 hover:text-white"
+                    asChild
+                  >
                     <a href={RESUME_HREF} download="DeepakKumar_Resume.pdf">
                       <Download className="h-4 w-4" />
                       Download résumé

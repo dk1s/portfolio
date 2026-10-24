@@ -1,7 +1,8 @@
 """Generates the brand favicon set.
 
-Dark rounded tile, emerald "DK" monogram. Rendered from system fonts with PIL
-so the mark is identical on every machine and needs no webfont at 16px.
+Indigo rounded tile, white "DK" monogram, warm-yellow bar. Rendered from
+system fonts with PIL so the mark is identical on every machine and needs no
+webfont at 16px. Palette: DESIGN.md §2.
 """
 
 import os
@@ -9,10 +10,10 @@ from PIL import Image, ImageDraw, ImageFont
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "public")
 
-BG = (8, 16, 13)        # #08100D  deep green-black
-BG_INNER = (13, 26, 21)  # #0D1A15
-ACCENT = (52, 211, 153)  # #34D399 emerald-400
-INK = (233, 245, 239)  # #E9F5EF
+BG = (91, 91, 214)      # #5B5BD6 indigo (hero background)
+BG_INNER = (110, 110, 226)  # lighter indigo highlight
+ACCENT = (244, 178, 70)  # #F4B246 warm yellow
+INK = (255, 255, 255)  # white
 
 SANS_BOLD = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
 SANS = "/System/Library/Fonts/Supplemental/Arial.ttf"
@@ -51,7 +52,7 @@ def draw_mark(size: int) -> Image.Image:
         fill=INK,
     )
 
-    # Emerald underscore bar, the same device as the wordmark's period
+    # Yellow underscore bar, the same device as the wordmark's period
     bar_w = int(big * 0.30)
     bar_h = max(2, int(big * 0.055))
     d.rounded_rectangle(

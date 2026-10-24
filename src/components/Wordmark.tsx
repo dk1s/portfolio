@@ -4,17 +4,25 @@ interface WordmarkProps {
   className?: string;
   /** Render as a clickable link back to the top of the page. */
   asLink?: boolean;
+  /** Sits on the indigo hero/footer background, where the mark is white. */
+  onDark?: boolean;
 }
 
 /**
- * The logotype. Serif, tight tracking, with the surname in the brand colour —
- * small detail, but it is the mark a visitor remembers.
+ * The logotype. Poppins bold, with the dot in the brand colour — small detail,
+ * but it is the mark a visitor remembers.
  */
-const Wordmark = ({ className, asLink = false }: WordmarkProps) => {
+const Wordmark = ({ className, asLink = false, onDark = false }: WordmarkProps) => {
   const content = (
-    <span className={cn("font-display text-lg font-semibold tracking-tight text-foreground", className)}>
+    <span
+      className={cn(
+        "font-display text-xl font-bold tracking-tight",
+        onDark ? "text-white" : "text-foreground",
+        className
+      )}
+    >
       Deepak
-      <span className="text-brand">.</span>
+      <span className={onDark ? "text-accent" : "text-brand"}>.</span>
       Kumar
     </span>
   );

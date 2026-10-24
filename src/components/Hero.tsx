@@ -1,16 +1,20 @@
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  ArrowRight,
-  Building2,
   Download,
   Github,
   Linkedin,
   Mail,
   MapPin,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import AvailabilityBadge from "@/components/AvailabilityBadge";
 import SocialLinks, { type SocialLink } from "@/components/SocialLinks";
+import {
+  Blob,
+  CurlyArrow,
+  DotColumn,
+  HalfCircle,
+  SquiggleCheck,
+} from "@/components/Decor";
 import profileImage from "@/assets/deepak-profile.jpg";
 import { usePortfolio } from "@/contexts/PortfolioContext";
 import { scrollToSection } from "@/lib/nav";
@@ -61,7 +65,7 @@ const MarqueeRow = ({ items, reverse = false, paused = false }: MarqueeRowProps)
       <li
         key={`${item}-${index}`}
         aria-hidden={index >= items.length}
-        className="whitespace-nowrap font-display text-xl font-medium text-muted-foreground/70 transition-colors hover:text-brand sm:text-2xl"
+        className="whitespace-nowrap font-display text-xl font-medium text-white/65 transition-colors hover:text-accent sm:text-2xl"
       >
         {item}
       </li>
@@ -71,7 +75,7 @@ const MarqueeRow = ({ items, reverse = false, paused = false }: MarqueeRowProps)
 
 const Hero = () => {
   const { data } = usePortfolio();
-  const { hero, about } = data;
+  const { hero, about, stats } = data;
   const prefersReducedMotion = useReducedMotion();
 
   const [firstName, ...rest] = hero.name.split(" ");
@@ -83,6 +87,9 @@ const Hero = () => {
     { label: "Email", href: `mailto:${hero.email}`, icon: Mail },
   ];
 
+  // A real stat from the data, used for the floating chip (DESIGN.md §5.2)
+  const headlineStat = stats[0];
+
   const fade = (delay: number) => ({
     initial: { opacity: 0, y: prefersReducedMotion ? 0 : 22 },
     animate: { opacity: 1, y: 0 },
@@ -92,90 +99,95 @@ const Hero = () => {
   return (
     <section
       id="top"
-      className="grain relative overflow-hidden pb-16 pt-32 sm:pb-20 sm:pt-36 lg:pb-24 lg:pt-40"
+      className="grain relative overflow-hidden bg-primary pb-16 pt-32 text-white sm:pb-20 sm:pt-36 lg:pb-24 lg:pt-40"
     >
-      {/* Ambient background: emerald bloom, hairline grid, vignette */}
-      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
-        <div
-          className="absolute -left-40 -top-40 h-[38rem] w-[38rem] rounded-full bg-primary/12 blur-[130px] animate-aurora"
-        />
-        <div className="absolute -right-32 top-1/3 h-[30rem] w-[30rem] rounded-full bg-primary/8 blur-[120px]" />
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, hsl(var(--foreground) / 0.055) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--foreground) / 0.055) 1px, transparent 1px)",
-            backgroundSize: "68px 68px",
-            maskImage:
-              "radial-gradient(ellipse 85% 60% at 50% 0%, black 20%, transparent 78%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 85% 60% at 50% 0%, black 20%, transparent 78%)",
-          }}
-        />
-      </div>
+      {/* Faint topographic contour lines (DESIGN.md §5.2) */}
+      <div className="topo-lines pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
 
-      <div className="container mx-auto">
-        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
+      {/* Far-left dot column */}
+      <DotColumn className="absolute left-6 top-1/2 hidden -translate-y-1/2 text-white lg:flex" />
+
+      {/* Far-right dot column, lower area */}
+      <DotColumn className="absolute bottom-16 right-6 hidden text-white lg:flex" />
+
+      {/* Hand-drawn doodles */}
+      <SquiggleCheck
+        className="float-slow absolute right-[8%] top-28 hidden w-28 text-accent/80 xl:block"
+      />
+
+      <div className="container mx-auto relative">
+        <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
           {/* ---- Copy column ---- */}
           <div className="lg:col-span-7">
             <motion.div {...fade(0.05)}>
-              <AvailabilityBadge label={hero.availability} />
+              <AvailabilityBadge label={hero.availability} tone="on-dark" />
             </motion.div>
+
+            {/* Curly arrow pointing from the headline toward the portrait */}
+            <CurlyArrow
+              className="float-slower absolute -right-4 top-40 hidden w-32 text-white/70 xl:block"
+            />
 
             <motion.h1
               {...fade(0.15)}
-              className="mt-7 font-display text-display font-semibold leading-[0.95] tracking-tightest"
+              className="mt-8 font-display text-display font-bold leading-[1.15] tracking-tight"
             >
-              {/* A whitespace node keeps the accessible name "Deepak Kumar"
-                  even though the two words sit on separate lines visually */}
-              <span className="block text-foreground">{firstName}</span>{" "}
-              {lastName && (
-                <span className="text-gradient-emerald block italic">{lastName}</span>
-              )}
+              <span className="block text-[1.75rem] font-semibold text-white/85 sm:text-4xl">
+                Hello, I&apos;m
+              </span>
+              <span className="mt-1 block">
+                {firstName} {lastName}
+              </span>
+              <span className="mt-1 block text-white/90">{hero.role}</span>
             </motion.h1>
 
-            <motion.div {...fade(0.25)} className="mt-7 flex flex-wrap items-center gap-x-3 gap-y-2">
-              <h2 className="text-lg font-medium text-foreground sm:text-xl">{hero.role}</h2>
-              <span className="hidden h-4 w-px bg-border sm:block" aria-hidden="true" />
-              <span className="text-base text-muted-foreground sm:text-lg">
-                at <span className="text-foreground">{hero.company}</span>
+            <motion.div {...fade(0.25)} className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2">
+              <span className="text-lg text-white/90">
+                at <span className="font-semibold text-white">{hero.company}</span>
+              </span>
+              <span className="hidden h-4 w-px bg-white/40 sm:block" aria-hidden="true" />
+              <span className="inline-flex items-center gap-1.5 text-base text-white/80 sm:text-lg">
+                <MapPin className="h-4 w-4 text-accent" aria-hidden="true" />
+                {hero.location}
               </span>
             </motion.div>
 
             <motion.p
               {...fade(0.32)}
-              className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
+              className="mt-6 max-w-xl text-base leading-relaxed text-white/90 sm:text-lg"
             >
               {hero.description}
             </motion.p>
 
-            {/* Primary actions */}
-            <motion.div {...fade(0.4)} className="mt-9 flex flex-wrap items-center gap-3">
-              <Button variant="brand" size="xl" onClick={() => scrollToSection("#contact")}>
+            {/* Primary actions: yellow pill + ghost link with outlined play-style icon */}
+            <motion.div {...fade(0.4)} className="mt-9 flex flex-wrap items-center gap-4">
+              <button
+                type="button"
+                onClick={() => scrollToSection("#contact")}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-10 py-4 text-lg font-medium text-accent-foreground shadow-accent-glow transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-dark"
+              >
                 Hire me
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="xl" asChild>
-                <a href={RESUME_HREF} download="DeepakKumar_Resume.pdf">
+              </button>
+              <a
+                href={RESUME_HREF}
+                download="DeepakKumar_Resume.pdf"
+                className="group inline-flex items-center gap-3 px-2 py-2 text-lg font-medium text-white transition-colors hover:text-accent"
+              >
+                <span
+                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-accent text-accent transition-transform duration-300 group-hover:scale-105"
+                  aria-hidden="true"
+                >
                   <Download className="h-4 w-4" />
-                  Download résumé
-                </a>
-              </Button>
+                </span>
+                Download résumé
+              </a>
             </motion.div>
 
             <motion.div {...fade(0.48)} className="mt-10 flex flex-wrap items-center gap-6">
-              <SocialLinks links={socialLinks} />
-              <span className="hidden h-8 w-px bg-border sm:block" aria-hidden="true" />
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-muted-foreground">
-                <span className="inline-flex items-center gap-1.5">
-                  <MapPin className="h-3.5 w-3.5 text-brand" aria-hidden="true" />
-                  {hero.location}
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <Building2 className="h-3.5 w-3.5 text-brand" aria-hidden="true" />
-                  {hero.company}
-                </span>
-              </div>
+              <SocialLinks
+                links={socialLinks}
+                className="[&_a]:border-white/30 [&_a]:bg-white/10 [&_a]:text-white [&_a:hover]:border-accent [&_a:hover]:bg-accent [&_a:hover]:text-accent-foreground"
+              />
             </motion.div>
           </div>
 
@@ -186,53 +198,47 @@ const Hero = () => {
             transition={{ duration: 0.9, delay: 0.3, ease }}
             className="lg:col-span-5"
           >
-            <div className="relative mx-auto max-w-sm lg:max-w-none">
-              {/* Emerald bloom behind the portrait */}
-              <div
-                className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-primary/12 blur-3xl"
-                aria-hidden="true"
-              />
-              <figure className="panel overflow-hidden p-2 shadow-card-lift">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-surface-2">
-                  <img
-                    src={profileImage}
-                    alt={`${hero.name}, ${hero.role}`}
-                    width={1000}
-                    height={729}
-                    className="h-full w-full object-cover"
-                    loading="eager"
-                    fetchPriority="high"
-                  />
-                  {/* Legibility scrim at the bottom of the portrait */}
-                  <div
-                    className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-card via-card/70 to-transparent"
-                    aria-hidden="true"
-                  />
-                  <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">
-                    <div>
-                      <p className="font-display text-xl font-semibold text-foreground">
-                        {hero.name}
-                      </p>
-                      <p className="mt-0.5 text-sm text-muted-foreground">
-                        {hero.tagline}
-                      </p>
-                    </div>
-                    <AvailabilityBadge label="Open" size="sm" className="shrink-0" />
-                  </figcaption>
-                </div>
-              </figure>
+            <div className="relative mx-auto aspect-square w-[min(100%,26rem)] lg:w-full lg:max-w-[26rem]">
+              {/* Big yellow blob behind the portrait */}
+              <Blob className="absolute -inset-8 h-[calc(100%+4rem)] w-[calc(100%+4rem)] text-accent" />
+              {/* Smaller blob to the left of the head */}
+              <Blob className="float-slow absolute -left-10 top-6 h-24 w-24 text-accent/80" />
+              {/* Yellow half circle at the bottom-left */}
+              <HalfCircle className="float-slower absolute -bottom-6 left-2 w-24 rotate-[215deg] text-accent" />
 
-              {/* Focus chips */}
-              <ul className="mt-4 flex flex-wrap gap-2">
-                {about.focus.slice(0, 3).map((item) => (
-                  <li
-                    key={item}
-                    className="rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground"
-                  >
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <img
+                src={profileImage}
+                alt={`${hero.name}, ${hero.role}`}
+                width={1000}
+                height={729}
+                className="absolute inset-0 h-full w-full rounded-full border-[6px] border-primary object-cover shadow-card-lift"
+                loading="eager"
+                fetchPriority="high"
+              />
+
+              {/* Floating stat chip (real data, top-right of the photo) */}
+              {headlineStat && (
+                <div className="float-slow absolute -right-2 top-6 rounded-[10px] bg-white px-4 py-3 text-left shadow-chip sm:-right-8">
+                  <span className="block font-display text-3xl font-bold leading-none text-brand">
+                    {headlineStat.value}
+                  </span>
+                  <span className="mt-1 block text-xs font-medium text-muted-foreground">
+                    {headlineStat.label}
+                  </span>
+                </div>
+              )}
+
+              {/* Floating focus chip (bottom-left) */}
+              {about.focus[0] && (
+                <div className="float-slower absolute -left-3 bottom-8 max-w-[11rem] rounded-[10px] bg-white px-4 py-3 text-left shadow-chip sm:-left-10">
+                  <span className="block text-xs font-medium text-muted-foreground">
+                    Focus
+                  </span>
+                  <span className="mt-0.5 block text-sm font-semibold leading-snug text-foreground">
+                    {about.focus[0]}
+                  </span>
+                </div>
+              )}
             </div>
           </motion.div>
         </div>
@@ -244,7 +250,7 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.7 }}
           className="mt-16 sm:mt-20"
         >
-          <p className="eyebrow mb-5 text-center">Built with</p>
+          <p className="eyebrow mb-5 text-center text-accent">Built with</p>
           <div
             className="mask-fade-x relative flex flex-col gap-y-4 overflow-hidden"
             aria-hidden="true"
