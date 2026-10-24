@@ -12,3 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://dk1s.github.io/Portfolio/sitemap.xml

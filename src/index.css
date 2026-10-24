@@ -2,95 +2,108 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* ==========================================================================
+   DESIGN SYSTEM — "Dark Editorial"
+   A single emerald brand accent on a deep green-black canvas, with Fraunces
+   (serif) for display and Inter for UI. Every surface, border and text colour
+   is a token so light and dark are both fully designed.
+   All colour values MUST be HSL triplets.
+   ========================================================================== */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 150 20% 99%;
+    --foreground: 165 32% 9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 165 32% 9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 165 32% 9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 158 72% 26%;
+    --primary-foreground: 150 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 152 20% 95%;
+    --secondary-foreground: 165 32% 14%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 150 16% 95%;
+    --muted-foreground: 162 12% 40%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 152 30% 93%;
+    --accent-foreground: 165 32% 12%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 150 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Borders are visible enough to define a surface, and `--input` clears the
+       3:1 non-text contrast bar (WCAG 1.4.11) so form fields are identifiable. */
+    --border: 155 18% 78%;
+    --input: 155 16% 52%;
+    --ring: 158 72% 30%;
 
-    --radius: 0.5rem;
+    /* Brand + elevation ramp */
+    --brand: 158 72% 30%;
+    --brand-soft: 152 45% 92%;
+    --brand-ink: 158 60% 20%;
+    --surface: 0 0% 100%;
+    --surface-2: 150 18% 97%;
 
-    --sidebar-background: 0 0% 98%;
+    --radius: 0.75rem;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 150 20% 98%;
+    --sidebar-foreground: 165 32% 12%;
+    --sidebar-primary: 158 72% 26%;
+    --sidebar-primary-foreground: 150 40% 98%;
+    --sidebar-accent: 152 25% 93%;
+    --sidebar-accent-foreground: 165 32% 12%;
+    --sidebar-border: 155 18% 82%;
+    --sidebar-ring: 158 72% 30%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 165 32% 4%;
+    --foreground: 150 22% 96%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 165 26% 6.5%;
+    --card-foreground: 150 22% 96%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 165 26% 6.5%;
+    --popover-foreground: 150 22% 96%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 152 72% 48%;
+    --primary-foreground: 165 40% 6%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 165 16% 12%;
+    --secondary-foreground: 150 20% 94%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 165 16% 12%;
+    --muted-foreground: 156 12% 64%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 165 18% 15%;
+    --accent-foreground: 150 20% 96%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 150 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 165 16% 19%;
+    --input: 165 14% 34%;
+    --ring: 152 72% 48%;
+
+    --brand: 152 72% 48%;
+    --brand-soft: 160 40% 12%;
+    --brand-ink: 152 70% 70%;
+    --surface: 165 26% 6.5%;
+    --surface-2: 165 20% 9%;
+
+    --sidebar-background: 165 30% 5%;
+    --sidebar-foreground: 150 20% 95%;
+    --sidebar-primary: 152 72% 48%;
+    --sidebar-primary-foreground: 165 40% 6%;
+    --sidebar-accent: 165 18% 15%;
+    --sidebar-accent-foreground: 150 20% 95%;
+    --sidebar-border: 165 16% 19%;
+    --sidebar-ring: 152 72% 48%;
   }
 }
 
@@ -101,22 +114,180 @@ All colors MUST be HSL.
 
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Anchor targets clear the fixed navbar */
+  section[id],
+  div[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  /* Modern text wrapping: headings get balanced ragging so lines break evenly,
+     body copy gets "pretty" to avoid orphans. Both are progressive enhancements
+     in browsers that do not support them. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Fluid vertical rhythm: 80px on a phone, 144px on a wide desktop. */
+  .section-rhythm {
+    padding-block: clamp(5rem, 3.2rem + 7.5vw, 9rem);
+  }
+
+  /* Large display type gets a slightly looser cap-height for comfort */
+  .font-display {
+    font-feature-settings: "kern", "liga";
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  ::selection {
+    @apply bg-primary/25 text-foreground;
+  }
+
+  /* Refined scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full border-[3px] border-solid border-background bg-border;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+}
+
+@layer components {
+  /* Premium film-grain texture, sits above flat fills and below content */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.16;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .dark .grain::after {
+    opacity: 0.22;
+  }
+
+  /* Hairline panel — the workhorse surface for cards */
+  .panel {
+    @apply rounded-2xl border border-border bg-card;
+  }
+
+  .panel-hover {
+    @apply transition-all duration-500 hover:border-primary/40;
+  }
+
+  /* Cursor-following spotlight. `--glow-x` / `--glow-y` are written by
+     `usePointerGlow`; they centre the gradient before the pointer ever moves. */
+  .panel-glow {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .panel-glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      22rem 22rem circle at var(--glow-x, 50%) var(--glow-y, 0%),
+      hsl(var(--brand) / 0.16),
+      transparent 70%
+    );
+    transition: opacity 400ms ease;
+  }
+
+  /* Only reveal the spotlight on devices that can actually hover. */
+  @media (hover: hover) and (pointer: fine) {
+    .panel-glow:hover::before {
+      opacity: 1;
+    }
+  }
+
+  /* Small uppercase label used for eyebrows, tags and metadata */
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground;
   }
 }
 
 @layer utilities {
-  /* Smooth transitions for all interactive elements */
-  .smooth-transition {
-    @apply transition-all duration-300 ease-out;
+  .text-gradient-brand {
+    @apply bg-gradient-to-br from-foreground via-foreground to-foreground/55 bg-clip-text text-transparent;
   }
 
-  /* Better text rendering */
-  .text-smooth {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  .text-gradient-emerald {
+    @apply bg-gradient-to-br from-brand via-brand to-brand/60 bg-clip-text text-transparent;
+  }
+
+  /* Soft emerald bloom behind hero / CTA areas */
+  .glow-brand {
+    box-shadow: 0 0 0 1px hsl(var(--brand) / 0.12), 0 24px 80px -32px hsl(var(--brand) / 0.55);
+  }
+
+  .glow-brand-sm {
+    box-shadow: 0 8px 30px -12px hsl(var(--brand) / 0.5);
+  }
+
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 12%,
+      black 88%,
+      transparent
+    );
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Respect the OS accessibility setting: kill transforms/parallax, keep opacity */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

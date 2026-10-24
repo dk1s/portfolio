@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,14 +7,17 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { PortfolioProvider } from "@/contexts/PortfolioContext";
 import Index from "./pages/Index";
-import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+
+// The admin panel is a local editing tool — keep it out of the bundle that
+// every visitor downloads.
+const Admin = lazy(() => import("./pages/Admin"));
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
       <PortfolioProvider>
         <TooltipProvider>
           <Toaster />
@@ -21,8 +25,14 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/admin" element={<Admin />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route
+                path="/admin"
+                element={
+                  <Suspense fallback={null}>
+                    <Admin />
+                  </Suspense>
+                }
+              />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

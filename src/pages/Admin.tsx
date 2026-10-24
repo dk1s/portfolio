@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+// The 700 weights are used only by this admin screen. Importing them here keeps
+// them in the lazily-loaded admin chunk, so public visitors never download them.
+import "@fontsource/fraunces/700.css";
+import "@fontsource/inter/700.css";
 import { 
   Lock, 
   LogOut, 
@@ -28,6 +32,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { usePortfolio } from "@/contexts/PortfolioContext";
+import type { Project, Skill } from "@/contexts/PortfolioContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -384,7 +389,7 @@ const ProjectsEditor = () => {
     setEditingIndex(null);
   };
 
-  const updateProject = (index: number, field: string, value: any) => {
+  const updateProject = <K extends keyof Project>(index: number, field: K, value: Project[K]) => {
     const newProjects = [...projects];
     newProjects[index] = { ...newProjects[index], [field]: value };
     setProjects(newProjects);
@@ -579,7 +584,12 @@ const SkillsEditor = () => {
     toast({ title: "✓ Skills updated!", description: "Your changes have been saved." });
   };
 
-  const updateSkill = (category: "frontend" | "backend", index: number, field: string, value: any) => {
+  const updateSkill = <K extends keyof Skill>(
+    category: "frontend" | "backend",
+    index: number,
+    field: K,
+    value: Skill[K]
+  ) => {
     const newSkills = { ...skills };
     newSkills[category][index] = { ...newSkills[category][index], [field]: value };
     setSkills(newSkills);
