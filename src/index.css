@@ -2,95 +2,121 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* ==========================================================================
+   DESIGN SYSTEM — "Playful Modern" (see DESIGN.md)
+   Bold indigo + warm yellow on white / off-white, Poppins throughout, rounded
+   cards, soft shadows and hand-drawn doodle accents. Every surface, border and
+   text colour is a token so light and dark are both fully designed.
+   All colour values MUST be HSL triplets.
+   ========================================================================== */
 
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 231 13% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 231 13% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 231 13% 20%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Brand indigo — hero background, highlighted cards, icons, eyebrows */
+    --primary: 240 60% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 258 39% 94%;
+    --secondary-foreground: 231 13% 20%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 97%;
+    --muted-foreground: 240 6% 35%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 37 89% 62%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Borders are visible enough to define a surface, and `--input` clears the
+       3:1 non-text contrast bar (WCAG 1.4.11) so form fields are identifiable. */
+    --border: 240 9% 81%;
+    --input: 240 4% 56%;
+    --ring: 37 89% 62%;
 
-    --radius: 0.5rem;
+    /* Brand ramp — indigo, its hover, tints and the lavender/peach card fills */
+    --brand: 240 60% 60%;
+    --brand-dark: 240 48% 52%;
+    --brand-light: 241 58% 78%;
+    --brand-soft: 258 39% 94%;
+    --brand-ink: 240 48% 52%;
+    --accent-dark: 37 76% 54%;
+    --accent-tint: 31 77% 93%;
+    --star: 45 80% 55%;
 
-    --sidebar-background: 0 0% 98%;
+    --surface: 0 0% 100%;
+    --surface-2: 0 0% 97%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --radius: 0.75rem;
 
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 258 39% 97%;
+    --sidebar-foreground: 231 13% 20%;
+    --sidebar-primary: 240 60% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 258 39% 93%;
+    --sidebar-accent-foreground: 231 13% 20%;
+    --sidebar-border: 240 9% 85%;
+    --sidebar-ring: 37 89% 62%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 235 25% 10%;
+    --foreground: 236 20% 96%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 236 25% 14%;
+    --card-foreground: 236 20% 96%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 236 25% 14%;
+    --popover-foreground: 236 20% 96%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 240 60% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 236 28% 20%;
+    --secondary-foreground: 236 20% 96%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 235 20% 18%;
+    --muted-foreground: 236 10% 73%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 37 89% 62%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --border: 235 19% 29%;
+    --input: 235 10% 46%;
+    --ring: 37 89% 62%;
+
+    --brand: 240 60% 60%;
+    --brand-dark: 240 48% 52%;
+    --brand-light: 241 58% 78%;
+    --brand-soft: 236 28% 20%;
+    --brand-ink: 241 68% 78%;
+    --accent-dark: 37 76% 54%;
+    --accent-tint: 236 26% 18%;
+    --star: 45 80% 55%;
+
+    --surface: 236 25% 14%;
+    --surface-2: 234 24% 17%;
+
+    --sidebar-background: 235 25% 11%;
+    --sidebar-foreground: 236 20% 95%;
+    --sidebar-primary: 240 60% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 236 26% 19%;
+    --sidebar-accent-foreground: 236 20% 95%;
+    --sidebar-border: 235 19% 24%;
+    --sidebar-ring: 37 89% 62%;
   }
 }
 
@@ -99,7 +125,274 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Anchor targets clear the fixed navbar */
+  section[id],
+  div[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  /* Modern text wrapping: headings get balanced ragging so lines break evenly,
+     body copy gets "pretty" to avoid orphans. Both are progressive enhancements
+     in browsers that do not support them. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Fluid vertical rhythm: 64px on a phone, 120px on a wide desktop. */
+  .section-rhythm {
+    padding-block: clamp(4rem, 3rem + 5vw, 7.5rem);
+  }
+
+  /* Display type gets a slightly looser cap-height for comfort */
+  .font-display {
+    font-feature-settings: "kern", "liga";
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  ::selection {
+    @apply bg-primary/25 text-foreground;
+  }
+
+  /* Refined scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full border-[3px] border-solid border-background bg-border;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+}
+
+@layer components {
+  /* Fine film-grain texture, sits above flat fills and below content */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.16;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .dark .grain::after {
+    opacity: 0.22;
+  }
+
+  /* Rounded card — the workhorse surface, 24px radius, very soft shadow */
+  .panel {
+    @apply rounded-2xl border border-border bg-card;
+    box-shadow: 0 10px 30px rgba(45, 47, 58, 0.06);
+  }
+
+  .dark .panel {
+    box-shadow: none;
+  }
+
+  .panel-hover {
+    @apply transition-all duration-300;
+  }
+
+  .panel-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 34px rgba(45, 47, 58, 0.1);
+  }
+
+  .dark .panel-hover:hover {
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Cursor-following spotlight. `--glow-x` / `--glow-y` are written by
+     `usePointerGlow`; they centre the gradient before the pointer ever moves. */
+  .panel-glow {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .panel-glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      22rem 22rem circle at var(--glow-x, 50%) var(--glow-y, 0%),
+      hsl(var(--brand) / 0.14),
+      transparent 70%
+    );
+    transition: opacity 400ms ease;
+  }
+
+  /* Only reveal the spotlight on devices that can actually hover. */
+  @media (hover: hover) and (pointer: fine) {
+    .panel-glow:hover::before {
+      opacity: 1;
+    }
+  }
+
+  /* Section eyebrow: uppercase, indigo, semibold — the label above every H2 */
+  .eyebrow {
+    @apply text-[13px] font-semibold uppercase tracking-[0.08em] text-brand sm:text-base;
+  }
+
+  /* ---------- Decorative backgrounds (all pointer-events-none) ---------- */
+
+  /* Topographic contour rings: two overlapping sets of concentric circles,
+     faint white on the hero, faint ink on light sections. */
+  .topo-lines {
+    background-image:
+      repeating-radial-gradient(
+        circle at 18% 20%,
+        transparent 0 46px,
+        rgba(255, 255, 255, 0.07) 46px 48px
+      ),
+      repeating-radial-gradient(
+        circle at 82% 78%,
+        transparent 0 62px,
+        rgba(255, 255, 255, 0.06) 62px 64px
+      );
+  }
+
+  .topo-lines-soft {
+    background-image:
+      repeating-radial-gradient(
+        circle at 12% 18%,
+        transparent 0 54px,
+        hsl(var(--foreground) / 0.045) 54px 56px
+      ),
+      repeating-radial-gradient(
+        circle at 88% 84%,
+        transparent 0 70px,
+        hsl(var(--foreground) / 0.04) 70px 72px
+      );
+  }
+
+  /* Halftone dot grid that fades out along a diagonal */
+  .halftone {
+    background-image: radial-gradient(
+      circle,
+      hsl(var(--brand) / 0.28) 1.5px,
+      transparent 1.6px
+    );
+    background-size: 15px 15px;
+    -webkit-mask-image: radial-gradient(ellipse at bottom right, black, transparent 70%);
+    mask-image: radial-gradient(ellipse at bottom right, black, transparent 70%);
+  }
+
+  /* Faint diagonal rounded bars used behind the credentials band */
+  .diag-bars {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      hsl(var(--foreground) / 0.05) 0 26px,
+      transparent 26px 62px
+    );
+  }
+}
+
+@layer utilities {
+  .text-gradient-brand {
+    @apply bg-gradient-to-br from-foreground via-foreground to-foreground/55 bg-clip-text text-transparent;
+  }
+
+  /* Soft indigo bloom behind hero / CTA areas */
+  .glow-brand {
+    box-shadow: 0 0 0 1px hsl(var(--brand) / 0.14), 0 24px 80px -32px hsl(var(--brand) / 0.55);
+  }
+
+  .glow-brand-sm {
+    box-shadow: 0 8px 30px -12px hsl(var(--brand) / 0.5);
+  }
+
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 12%,
+      black 88%,
+      transparent
+    );
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Gentle loops for floating chips and doodles (killed by reduced-motion) */
+  .float-slow {
+    animation: float-y 5s ease-in-out infinite;
+  }
+
+  .float-slower {
+    animation: float-y 6.5s ease-in-out infinite;
+  }
+
+  .spin-slow {
+    animation: spin-ring 24s linear infinite;
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes spin-ring {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Respect the OS accessibility setting: kill transforms/parallax, keep opacity */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

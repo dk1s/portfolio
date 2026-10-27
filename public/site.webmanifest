@@ -1,0 +1,30 @@
+{
+  "name": "Deepak Kumar — Software Developer",
+  "short_name": "Deepak Kumar",
+  "description": "Portfolio of Deepak Kumar, Software Developer at 86 Agency building responsive web applications with React, Next.js, TypeScript and Tailwind CSS.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#060b09",
+  "theme_color": "#060b09",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

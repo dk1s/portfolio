@@ -1,164 +1,250 @@
-import { motion } from "framer-motion";
-import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, Github } from "lucide-react";
+import Section from "@/components/Section";
+import SectionHeading from "@/components/SectionHeading";
+import SectionReveal from "@/components/SectionReveal";
+import ProjectIcon from "@/components/ProjectIcon";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { usePortfolio, type Project } from "@/contexts/PortfolioContext";
+import { usePointerGlow } from "@/hooks/usePointerGlow";
+import { cn } from "@/lib/utils";
+import logyxpress from "@/assets/images/LogyXpress_logo.png";
+import cricarabia from "@/assets/images/Cric_Arabia.png";
+import cricketgyan from "@/assets/images/cricketgyan_logo.jpg";
+import firesetgo from "@/assets/images/FSG_logo.png";
+import criccross from "@/assets/images/criccross_logo.png";
+import aplus1admin from "@/assets/images/aplus1_admin.png";
+import agency86 from "@/assets/images/86-agency-logo.webp";
 
-const projects = [
-  {
-    title: "E-Commerce Platform",
-    description:
-      "A full-featured online store with real-time inventory, secure payments, and admin dashboard. Built for scalability and performance.",
-    image: "🛒",
-    tags: ["React", "Node.js", "PostgreSQL", "Stripe"],
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: true,
-  },
-  {
-    title: "Project Management Tool",
-    description:
-      "Collaborative workspace for teams with task boards, real-time updates, and comprehensive analytics.",
-    image: "📊",
-    tags: ["TypeScript", "Next.js", "Prisma", "WebSocket"],
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: true,
-  },
-  {
-    title: "AI Chat Assistant",
-    description:
-      "Intelligent conversational interface powered by machine learning with context-aware responses.",
-    image: "🤖",
-    tags: ["Python", "React", "OpenAI", "FastAPI"],
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: false,
-  },
-  {
-    title: "Real Estate Finder",
-    description:
-      "Property search platform with advanced filtering, map integration, and virtual tours.",
-    image: "🏠",
-    tags: ["Vue.js", "Firebase", "Google Maps", "Tailwind"],
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: false,
-  },
-];
+const projectImageMap: Record<string, string> = {
+  logyxpress,
+  cricarabia,
+  "cric 11": cricarabia,
+  "cric11": cricarabia,
+  cricketgyan,
+  firesetgo,
+  eventbooking: firesetgo,
+  criccross,
+  "cric cross": criccross,
+  "a plus one admin": aplus1admin,
+  aplus1admin,
+  "86 agency": agency86,
+  agency86,
+};
 
-const Projects = () => {
+const badgeTone: Record<string, string> = {
+  Professional: "bg-accent-tint text-foreground",
+  Personal: "bg-secondary text-muted-foreground",
+  Academic: "bg-secondary text-muted-foreground",
+};
+
+interface ProjectCardProps {
+  project: Project;
+  index: number;
+}
+
+/**
+ * A single project card: header band with icon and type badge, description,
+ * highlight chips, tag chips, and always-visible links.
+ */
+const ProjectCard = ({ project, index }: ProjectCardProps) => {
+  const glow = usePointerGlow();
+  const hasLive = project.liveUrl && project.liveUrl !== "#";
+  const hasSource = project.githubUrl && project.githubUrl !== "#";
+
   return (
-    <section id="projects" className="py-24 bg-background">
-      <div className="container mx-auto px-6">
-        <motion.div
-          className="max-w-6xl mx-auto"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+    <motion.li
+      layout
+      initial={{ opacity: 0, y: 16, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.97 }}
+      transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
+      className="group"
+    >
+      <article
+        ref={glow.ref}
+        onPointerMove={glow.onPointerMove}
+        onPointerLeave={glow.onPointerLeave}
+        className="panel panel-hover panel-glow flex h-full flex-col overflow-hidden border-0 bg-surface-2"
+      >
+        {/* Header band — turns indigo on hover, like a highlighted card */}
+        <div className="relative flex items-center justify-between gap-3 bg-primary/10 p-5 transition-colors duration-300 group-hover:bg-primary">
+          <div className="flex items-center gap-3">
+            <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-brand transition-colors duration-300 group-hover:bg-white group-hover:text-brand overflow-hidden shadow-sm">
+              {(() => {
+                const imageSrc =
+                  projectImageMap[project.title.toLowerCase()] ||
+                  projectImageMap[project.title.toLowerCase().replace(/\s+/g, "")] ||
+                  (project as any).image;
+                if (imageSrc) {
+                  return (
+                    <img
+                      src={imageSrc}
+                      alt={`${project.title} logo`}
+                      className="h-full w-full object-contain p-1.5 rounded-full"
+                    />
+                  );
+                }
+                return <ProjectIcon name={project.icon} className="h-6 w-6" />;
+              })()}
+            </span>
+            <div className="flex flex-col">
+              <h3 className="font-display text-lg font-semibold leading-snug text-foreground group-hover:text-white transition-colors duration-300">
+                {project.title}
+              </h3>
+            </div>
+          </div>
+          <span
+            className={cn(
+              "rounded-full px-3 py-1 text-xs font-medium",
+              badgeTone[project.type] ?? badgeTone.Personal
+            )}
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Featured Projects
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              A selection of projects that showcase my skills and passion for building great software.
-            </p>
-            <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-4" />
-          </motion.div>
+            {project.type}
+          </span>
+        </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {projects.map((project, index) => (
-              <motion.div
-                key={project.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 * index }}
-                whileHover={{ y: -8 }}
-                className="group relative"
-              >
-                <div className="h-full rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5">
-                  {/* Project Image/Icon */}
-                  <div className="aspect-video bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center relative overflow-hidden">
-                    <span className="text-7xl group-hover:scale-110 transition-transform duration-500">
-                      {project.image}
-                    </span>
-                    <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-300" />
-                    
-                    {/* Featured badge */}
-                    {project.featured && (
-                      <div className="absolute top-4 left-4">
-                        <Badge className="bg-primary text-primary-foreground">
-                          Featured
-                        </Badge>
-                      </div>
-                    )}
-
-                    {/* Quick links overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-background/80 backdrop-blur-sm">
-                      <Button size="sm" variant="secondary" asChild>
-                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          Live Demo
-                        </a>
-                      </Button>
-                      <Button size="sm" variant="outline" asChild>
-                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                          <Github className="h-4 w-4 mr-2" />
-                          Code
-                        </a>
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-6">
-                    <div className="flex items-start justify-between mb-3">
-                      <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
-                        {project.title}
-                      </h3>
-                      <ArrowUpRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-                    </div>
-                    <p className="text-muted-foreground mb-4 line-clamp-2">
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+        <div className="flex flex-1 flex-col p-5">
+          <div className="flex items-start justify-between gap-2">
+            <p className="sr-only">{project.title}</p>
+            <ArrowUpRight
+              className="ml-auto h-4 w-4 shrink-0 text-muted-foreground transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand"
+              aria-hidden="true"
+            />
           </div>
 
-          <motion.div
-            className="text-center mt-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            {project.description}
+          </p>
+
+          {project.highlights.length > 0 && (
+            <ul className="mt-4 flex flex-wrap gap-1.5">
+              {project.highlights.map((highlight) => (
+                <li
+                  key={highlight}
+                  className="rounded-lg bg-card px-2.5 py-1 text-xs font-medium text-foreground/85"
+                >
+                  {highlight}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <ul className="mt-4 flex flex-wrap gap-1.5">
+            {project.tags.slice(0, 4).map((tag) => (
+              <li
+                key={tag}
+                className="rounded-md border border-border px-2 py-1 text-xs text-muted-foreground"
+              >
+                {tag}
+              </li>
+            ))}
+            {project.tags.length > 4 && (
+              <li className="rounded-md px-2 py-1 text-xs text-muted-foreground/70">
+                +{project.tags.length - 4}
+              </li>
+            )}
+          </ul>
+
+          {/* Links stay visible: a hover-only overlay is unusable on touch */}
+          <div className="mt-auto flex items-center gap-2 pt-6">
+            {hasLive ? (
+              <Button variant="brand" size="sm" asChild>
+                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                  Live site
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              </Button>
+            ) : (
+              <span className="rounded-full border border-dashed border-border px-3 py-1.5 text-xs text-muted-foreground">
+                Not published
+              </span>
+            )}
+            {hasSource && (
+              <Button variant="outline" size="sm" asChild>
+                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                  <Github className="h-3.5 w-3.5" />
+                  Source
+                </a>
+              </Button>
+            )}
+          </div>
+        </div>
+      </article>
+    </motion.li>
+  );
+};
+
+const Projects = () => {
+  const { data } = usePortfolio();
+  const { projects, hero } = data;
+
+  const types = useMemo(
+    () => ["All", ...Array.from(new Set(projects.map((project) => project.type)))],
+    [projects]
+  );
+  const [activeType, setActiveType] = useState("All");
+
+  const visibleProjects = useMemo(
+    () =>
+      activeType === "All"
+        ? projects
+        : projects.filter((project) => project.type === activeType),
+    [projects, activeType]
+  );
+
+  return (
+    <Section id="projects" tone="default">
+      <SectionHeading
+        eyebrow="02 — Selected work"
+        title="Projects I've shipped"
+        description="Production work across logistics, sports, events and fintech — built with React, Next.js and TypeScript, with the state management and API work that real products need."
+        align="center"
+        className="mb-12 sm:mb-16"
+        action={
+          <div
+            role="group"
+            aria-label="Filter projects by type"
+            className="flex flex-wrap justify-center gap-2"
           >
-            <Button variant="outline" size="lg" asChild>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                <Github className="mr-2 h-5 w-5" />
-                View All Projects on GitHub
-              </a>
-            </Button>
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
+            {types.map((type) => (
+              <button
+                key={type}
+                type="button"
+                aria-pressed={activeType === type}
+                onClick={() => setActiveType(type)}
+                className={cn(
+                  "rounded-full px-5 py-2 text-sm font-medium transition-all duration-300",
+                  activeType === type
+                    ? "bg-accent text-accent-foreground shadow-accent-glow"
+                    : "bg-card text-muted-foreground shadow-card hover:text-foreground"
+                )}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
+        }
+      />
+
+      <motion.ul layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <AnimatePresence mode="popLayout">
+          {visibleProjects.map((project, index) => (
+            <ProjectCard key={project.title} project={project} index={index} />
+          ))}
+        </AnimatePresence>
+      </motion.ul>
+
+      <SectionReveal delay={0.1} className="mt-12 flex justify-center">
+        <Button variant="brand" size="lg" asChild>
+          <a href={hero.githubUrl} target="_blank" rel="noopener noreferrer">
+            <Github className="h-4 w-4" />
+            See everything on GitHub
+          </a>
+        </Button>
+      </SectionReveal>
+    </Section>
   );
 };
 
