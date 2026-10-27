@@ -9,6 +9,29 @@ import { Button } from "@/components/ui/button";
 import { usePortfolio, type Project } from "@/contexts/PortfolioContext";
 import { usePointerGlow } from "@/hooks/usePointerGlow";
 import { cn } from "@/lib/utils";
+import logyxpress from "@/assets/images/LogyXpress_logo.png";
+import cricarabia from "@/assets/images/Cric_Arabia.png";
+import cricketgyan from "@/assets/images/cricketgyan_logo.jpg";
+import firesetgo from "@/assets/images/FSG_logo.png";
+import criccross from "@/assets/images/criccross_logo.png";
+import aplus1admin from "@/assets/images/aplus1_admin.png";
+import agency86 from "@/assets/images/86-agency-logo.webp";
+
+const projectImageMap: Record<string, string> = {
+  logyxpress,
+  cricarabia,
+  "cric 11": cricarabia,
+  "cric11": cricarabia,
+  cricketgyan,
+  firesetgo,
+  eventbooking: firesetgo,
+  criccross,
+  "cric cross": criccross,
+  "a plus one admin": aplus1admin,
+  aplus1admin,
+  "86 agency": agency86,
+  agency86,
+};
 
 const badgeTone: Record<string, string> = {
   Professional: "bg-accent-tint text-foreground",
@@ -46,10 +69,32 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         className="panel panel-hover panel-glow flex h-full flex-col overflow-hidden border-0 bg-surface-2"
       >
         {/* Header band — turns indigo on hover, like a highlighted card */}
-        <div className="relative flex items-start justify-between gap-3 bg-primary/10 p-5 transition-colors duration-300 group-hover:bg-primary">
-          <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white transition-colors duration-300 group-hover:bg-white group-hover:text-brand">
-            <ProjectIcon name={project.icon} className="h-5 w-5" />
-          </span>
+        <div className="relative flex items-center justify-between gap-3 bg-primary/10 p-5 transition-colors duration-300 group-hover:bg-primary">
+          <div className="flex items-center gap-3">
+            <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-brand transition-colors duration-300 group-hover:bg-white group-hover:text-brand overflow-hidden shadow-sm">
+              {(() => {
+                const imageSrc =
+                  projectImageMap[project.title.toLowerCase()] ||
+                  projectImageMap[project.title.toLowerCase().replace(/\s+/g, "")] ||
+                  (project as any).image;
+                if (imageSrc) {
+                  return (
+                    <img
+                      src={imageSrc}
+                      alt={`${project.title} logo`}
+                      className="h-full w-full object-contain p-1.5 rounded-full"
+                    />
+                  );
+                }
+                return <ProjectIcon name={project.icon} className="h-6 w-6" />;
+              })()}
+            </span>
+            <div className="flex flex-col">
+              <h3 className="font-display text-lg font-semibold leading-snug text-foreground group-hover:text-white transition-colors duration-300">
+                {project.title}
+              </h3>
+            </div>
+          </div>
           <span
             className={cn(
               "rounded-full px-3 py-1 text-xs font-medium",
@@ -61,13 +106,13 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         </div>
 
         <div className="flex flex-1 flex-col p-5">
-          <h3 className="flex items-start justify-between gap-2 font-display text-xl font-semibold leading-snug text-foreground">
-            {project.title}
+          <div className="flex items-start justify-between gap-2">
+            <p className="sr-only">{project.title}</p>
             <ArrowUpRight
-              className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand"
+              className="ml-auto h-4 w-4 shrink-0 text-muted-foreground transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand"
               aria-hidden="true"
             />
-          </h3>
+          </div>
 
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             {project.description}

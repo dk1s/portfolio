@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Briefcase, GraduationCap, Award } from "lucide-react";
 import Section from "@/components/Section";
 import SectionHeading from "@/components/SectionHeading";
@@ -7,70 +7,100 @@ import SectionReveal from "@/components/SectionReveal";
 import Period from "@/components/Period";
 import { CurveArrowDown, CurveArrowRight, DashedRing } from "@/components/Decor";
 import { usePortfolio } from "@/contexts/PortfolioContext";
-import type { Skill } from "@/contexts/PortfolioContext";
-
-const SkillBar = ({ skill, index }: { skill: Skill; index: number }) => {
-  const prefersReducedMotion = useReducedMotion();
-
-  return (
-    <li>
-      <div className="flex items-baseline justify-between gap-4 text-sm">
-        <span className="font-medium text-foreground">{skill.name}</span>
-        <span className="tabular-nums text-xs text-muted-foreground">{skill.level}%</span>
-      </div>
-      <div
-        className="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted"
-        role="meter"
-        aria-valuenow={skill.level}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-label={skill.name}
-      >
-        <motion.div
-          className="h-full rounded-full bg-primary"
-          initial={{ width: prefersReducedMotion ? `${skill.level}%` : 0 }}
-          whileInView={{ width: `${skill.level}%` }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.9, delay: 0.1 + index * 0.06, ease: [0.22, 1, 0.36, 1] }}
-        />
-      </div>
-    </li>
-  );
-};
 
 const Skills = () => {
   const { data } = usePortfolio();
   const { skills } = data;
+
+  const skillCategories = [
+    {
+      title: "Programming Languages",
+      items: ["JavaScript", "TypeScript", "SQL"],
+    },
+    {
+      title: "Frontend Frameworks & Libraries",
+      items: [
+        "React.js",
+        "Next.js",
+        "Redux Toolkit",
+        "Zustand",
+        "RTK Query",
+        "Tailwind CSS",
+        "HTML5",
+        "CSS3",
+      ],
+    },
+    {
+      title: "Real-time & API Technologies",
+      items: ["WebSocket", "Agora SDK", "Socket.io", "REST API Integration"],
+    },
+    {
+      title: "Development Tools & Platforms",
+      items: ["Git", "GitHub", "Postman", "Salesforce Supersets", "n8n"],
+    },
+    {
+      title: "Web & Content Management",
+      items: ["WordPress", "SEO Management", "UI/UX Design"],
+    },
+    {
+      title: "AI & Automation",
+      items: [
+        "AI Automation",
+        "Workflow Automation",
+        "OpenAI API",
+        "Google Gemini API",
+        "Prompt Engineering",
+      ],
+    },
+    {
+      title: "AI Development Tools",
+      items: ["Claude Code", "Gemini CLI", "OpenAI Codex", "OpenCode"],
+    },
+    {
+      title: "Backend & Database",
+      items: ["Node.js", "Express.js", "REST APIs", "MongoDB", "JWT Authentication"],
+    },
+  ];
 
   return (
     <Section id="skills" tone="default">
       <SectionHeading
         eyebrow="03 — Skills"
         title="The stack I reach for"
-        description="A practical toolkit built by shipping real products — daily, in React and TypeScript, with the API and state layers that keep them running."
+        description="A practical toolkit built by shipping real products — daily, in React, TypeScript, and modern AI tooling."
         align="center"
         className="mb-12 sm:mb-16"
       />
 
-      {/* ---- Proficiency ---- */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {(
-          [
-            { title: "Frontend & Web", items: skills.frontend },
-            { title: "Backend & Tools", items: skills.backend },
-          ] as const
-        ).map((group, groupIndex) => (
-          <SectionReveal key={group.title} delay={groupIndex * 0.08}>
-            <div className="panel h-full p-6 sm:p-8">
-              <h3 className="font-display text-xl font-semibold text-foreground">
-                {group.title}
-              </h3>
-              <ul className="mt-7 space-y-5">
-                {group.items.map((skill, index) => (
-                  <SkillBar key={skill.name} skill={skill} index={index} />
-                ))}
-              </ul>
-            </div>
+      {/* ---- Skills by Category ---- */}
+      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        {skillCategories.map((category, categoryIndex) => (
+          <SectionReveal key={category.title} delay={categoryIndex * 0.04}>
+            <motion.div
+              className="panel panel-hover group relative h-full overflow-hidden p-6"
+              whileHover={{ y: -6 }}
+              transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            >
+              <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-primary/5 transition-all duration-500 group-hover:scale-150" />
+              <div className="relative">
+                <div className="mb-4 flex items-center gap-3">
+                  <span className="h-px w-6 bg-primary" aria-hidden="true" />
+                  <h3 className="font-display text-base font-semibold text-foreground">
+                    {category.title}
+                  </h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {category.items.map((skillName) => (
+                    <span
+                      key={skillName}
+                      className="inline-flex items-center rounded-full border border-border/80 bg-background/70 px-2.5 py-1 text-xs font-medium text-foreground shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-accent-tint hover:text-foreground"
+                    >
+                      {skillName}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
           </SectionReveal>
         ))}
       </div>

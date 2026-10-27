@@ -452,7 +452,11 @@ const ProjectsEditor = () => {
                     onClick={() => setEditingIndex(editingIndex === index ? null : index)}
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <span className="text-2xl flex-shrink-0">{project.icon}</span>
+                      {(project as any).image ? (
+                        <img src={(project as any).image} alt="" className="w-10 h-10 rounded-full object-contain bg-white flex-shrink-0" />
+                      ) : (
+                        <span className="text-2xl flex-shrink-0">{project.icon}</span>
+                      )}
                       <div className="min-w-0">
                         <h4 className="font-semibold text-foreground truncate">{project.title}</h4>
                         <p className="text-xs text-muted-foreground">{project.type}</p>
@@ -489,13 +493,23 @@ const ProjectsEditor = () => {
                               />
                             </div>
                             <div className="space-y-2">
-                              <Label className="text-xs font-medium">Icon (emoji)</Label>
+                              <Label className="text-xs font-medium">Icon (emoji/name)</Label>
                               <Input 
                                 value={project.icon} 
                                 onChange={(e) => updateProject(index, "icon", e.target.value)}
                                 className="h-10"
                               />
                             </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label className="text-xs font-medium">Image URL (logo)</Label>
+                            <Input 
+                              value={(project as any).image || ""} 
+                              onChange={(e) => updateProject(index, "image" as any, e.target.value || undefined)}
+                              className="h-10"
+                              placeholder="/src/assets/images/... or URL"
+                            />
                           </div>
                           
                           <div className="space-y-2">

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { projectImages } from "@/data/projectImages";
 
 export interface HeroData {
   name: string;
@@ -34,6 +35,7 @@ export interface Project {
   description: string;
   /** Key for a lucide-react icon. See src/components/ProjectIcon.tsx */
   icon: string;
+  image?: string;
   tags: string[];
   liveUrl: string;
   githubUrl: string;
@@ -147,12 +149,17 @@ export const defaultPortfolioData: PortfolioData = {
     { name: "Geo-processing With Python", issuer: "ISRO (IIRS), Dehradun" },
     { name: "IT Essential & Cybersecurity", issuer: "CISCO Network Academy" },
   ],
+
+
+
+
   projects: [
     {
       title: "Logyxpress",
       description:
         "End-to-end logistics and delivery management platform. Built responsive interfaces with React/Next.js, integrated RESTful APIs, implemented real-time tracking, and managed complex state with Redux for seamless order management.",
       icon: "Package",
+      image: new URL("@/assets/images/LogyXpress_logo.png", import.meta.url).href,
       tags: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Redux", "API Integration"],
       liveUrl: "https://app.logyxps.com/",
       githubUrl: "#",
@@ -161,10 +168,62 @@ export const defaultPortfolioData: PortfolioData = {
       highlights: ["Real-time tracking", "CRUD operations", "State management"],
     },
     {
+      title: "A Plus One Admin",
+      description:
+        "Marketplace operations console for A Plus One services. Admin dashboard to manage vendors, orders, users, services, and platform operations with role-based access control.",
+      icon: "Boxes",
+      image: new URL("@/assets/images/aplus1_admin.png", import.meta.url).href,
+      tags: ["React", "TypeScript", "Admin Panel", "Dashboard"],
+      liveUrl: "https://admin-service.weare86.in/",
+      githubUrl: "#",
+      featured: true,
+      type: "Professional",
+      highlights: ["Operations dashboard", "Role-based access", "Service management"],
+    },
+    {
+      title: "CricCross",
+      description:
+        "A standardised cricket skill and fitness circuit with 11 stations, one score, run the same way in every city. Platform for event discovery, slot booking, and performance tracking for cricket players.",
+      icon: "Trophy",
+      image: new URL("@/assets/images/criccross_logo.png", import.meta.url).href,
+      tags: ["React", "TypeScript", "Tailwind CSS", "Event Booking"],
+      liveUrl: "https://criccross.com/",
+      githubUrl: "#",
+      featured: true,
+      type: "Professional",
+      highlights: ["11-station circuit", "Event booking", "Standardized scoring"],
+    },
+    {
+      title: "86 Agency",
+      description:
+        "Official website of 86 Agency - a senior-only software development company building custom platforms, cloud infrastructure and AI systems for fintech, healthcare and SaaS teams.",
+      icon: "Globe",
+      image: new URL("@/assets/images/86-agency-logo.webp", import.meta.url).href,
+      tags: ["React", "Next.js", "TypeScript", "Corporate Website"],
+      liveUrl: "https://weare86.com/",
+      githubUrl: "#",
+      featured: true,
+      type: "Professional",
+      highlights: ["Corporate website", "Brand presence", "Service showcase"],
+    },
+    {
+      title: "Quilence OS",
+      description:
+        "From-scratch ARM64 mobile operating system roadmap and implementation. Building bootloader, kernel, memory management, scheduler, processes, drivers, filesystem, graphics, window manager, system apps, app runtime, and security from the ground up, tested in QEMU.",
+      icon: "Boxes",
+      tags: ["C", "Assembly", "Rust", "C++", "ARM64", "Kernel", "OS Development", "QEMU"],
+      liveUrl: "#",
+      githubUrl: "https://github.com/dk1s/quilence",
+      featured: false,
+      type: "Personal",
+      highlights: ["Custom kernel", "ARM64 boot", "Memory & scheduler", "Graphics & WM"],
+    },
+    {
       title: "CricArabia",
       description:
         "Cricket platform for the Arabian region. Developed responsive UI components, integrated live match APIs for real-time scores, implemented Zustand for efficient state management, and built interactive data visualizations.",
       icon: "Globe",
+      image: new URL("@/assets/images/Cric_Arabia.png", import.meta.url).href,
       tags: ["React", "TypeScript", "Tailwind CSS", "Zustand", "REST API", "Real-time Data"],
       liveUrl: "https://cricarabia.com/",
       githubUrl: "#",
@@ -177,6 +236,7 @@ export const defaultPortfolioData: PortfolioData = {
       description:
         "Feature-rich fantasy cricket application with team building, live scoring, and competitive leaderboards. Implemented complex state management with Redux, real-time updates via Socket.IO, and responsive mobile-first design.",
       icon: "Trophy",
+      image: new URL("@/assets/images/Cric_Arabia.png", import.meta.url).href,
       tags: ["React", "Next.js", "TypeScript", "Redux", "Socket.IO", "Tailwind CSS"],
       liveUrl: "https://cric11.com",
       githubUrl: "#",
@@ -189,6 +249,7 @@ export const defaultPortfolioData: PortfolioData = {
       description:
         "Full-featured cricket platform covering live scores, series, rankings, schedules, statistics, news, photos, videos and teams — powered by real-time Socket.IO updates, Redux state management and RTK Query for efficient data fetching.",
       icon: "Radio",
+      image: new URL("@/assets/images/cricketgyan_logo.jpg", import.meta.url).href,
       tags: ["React", "Redux", "Tailwind CSS", "Socket.IO", "TypeScript", "RTK Query"],
       liveUrl: "https://cricketgyan.com/",
       githubUrl: "#",
@@ -201,6 +262,7 @@ export const defaultPortfolioData: PortfolioData = {
       description:
         "Dynamic event and activity booking platform. Built complete frontend with React, integrated payment APIs, implemented user authentication flows, and created intuitive booking interfaces with smooth animations.",
       icon: "Flame",
+      image: new URL("@/assets/images/FSG_logo.png", import.meta.url).href,
       tags: ["React", "Next.js", "TypeScript", "API Integration", "Zustand", "Tailwind CSS"],
       liveUrl: "https://app.firesetgo.com/",
       githubUrl: "#",
@@ -213,6 +275,7 @@ export const defaultPortfolioData: PortfolioData = {
       description:
         "Comprehensive event management and ticket booking system. Developed responsive event listings, integrated calendar APIs, built real-time seat selection, and implemented chat support via Socket.IO for customer assistance.",
       icon: "Ticket",
+      image: new URL("@/assets/images/FSG_logo.png", import.meta.url).href,
       tags: ["React", "TypeScript", "Socket.IO", "Redux", "REST API", "Tailwind CSS"],
       liveUrl: "https://event-booking.firesetgo.com/",
       githubUrl: "#",
@@ -271,21 +334,46 @@ export const defaultPortfolioData: PortfolioData = {
   ],
   skills: {
     frontend: [
-      { name: "React", level: 90 },
-      { name: "Next.js", level: 85 },
-      { name: "TypeScript", level: 85 },
       { name: "JavaScript", level: 90 },
+      { name: "TypeScript", level: 90 },
+      { name: "SQL", level: 85 },
+      { name: "React.js", level: 90 },
+      { name: "Next.js", level: 90 },
+      { name: "Redux Toolkit", level: 85 },
+      { name: "Zustand", level: 85 },
+      { name: "RTK Query", level: 85 },
       { name: "Tailwind CSS", level: 95 },
-      { name: "HTML/CSS", level: 95 },
+      { name: "HTML5", level: 95 },
+      { name: "CSS3", level: 95 },
     ],
     backend: [
-      { name: "SQL", level: 80 },
-      { name: "Git", level: 85 },
-      { name: "Redux/Zustand", level: 80 },
+      { name: "WebSocket", level: 85 },
+      { name: "Agora SDK", level: 80 },
+      { name: "Socket.io", level: 90 },
+      { name: "REST API Integration", level: 90 },
+      { name: "Git", level: 90 },
+      { name: "GitHub", level: 90 },
+      { name: "Postman", level: 90 },
+      { name: "Salesforce Supersets", level: 80 },
+      { name: "n8n", level: 80 },
+      { name: "WordPress", level: 80 },
+      { name: "SEO Management", level: 80 },
+      { name: "UI/UX Design", level: 80 },
+      { name: "AI Automation", level: 85 },
+      { name: "Workflow Automation", level: 85 },
+      { name: "OpenAI API", level: 85 },
+      { name: "Google Gemini API", level: 85 },
+      { name: "Prompt Engineering", level: 90 },
+      { name: "Claude Code", level: 90 },
+      { name: "Gemini CLI", level: 90 },
+      { name: "OpenAI Codex", level: 90 },
+      { name: "OpenCode", level: 90 },
+      { name: "Node.js", level: 85 },
+      { name: "Express.js", level: 85 },
+      { name: "REST APIs", level: 90 },
+      { name: "MongoDB", level: 80 },
+      { name: "JWT Authentication", level: 85 },
       { name: "Python", level: 75 },
-      { name: "Node.js", level: 70 },
-      { name: "MongoDB", level: 70 },
-      { name: "WordPress", level: 70 },
       { name: "MS Office", level: 85 },
     ],
     experience: [
@@ -346,7 +434,7 @@ export const defaultPortfolioData: PortfolioData = {
   },
 };
 
-const STORAGE_KEY = "portfolio_data_v2";
+const STORAGE_KEY = "portfolio_data_v4";
 const ADMIN_PASSWORD_KEY = "portfolio_admin_password";
 const DEFAULT_PASSWORD = "admin123"; // User should change this
 
@@ -370,7 +458,24 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
   const [data, setData] = useState<PortfolioData>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? { ...defaultPortfolioData, ...JSON.parse(stored) } : defaultPortfolioData;
+      if (stored) {
+        const parsed = JSON.parse(stored) as Partial<PortfolioData>;
+        const merged = { ...defaultPortfolioData, ...parsed };
+        const visanet = merged.projects?.find((p) => p.title === "VisaNet");
+        const visanetImage = (visanet as Project & { image?: string } | undefined)?.image;
+        if (
+          !merged.projects?.find((p) => p.title === "CricCross") ||
+          !merged.projects?.find((p) => p.title === "A Plus One Admin") ||
+          !merged.projects?.find((p) => p.title === "86 Agency") ||
+          !merged.projects?.find((p) => p.title === "Quilence OS") ||
+          merged.projects.filter((p) => p.title === "Quilence OS").length > 1 ||
+          (visanetImage && (visanetImage.includes("A_Plus") || visanetImage.includes("aplus")))
+        ) {
+          merged.projects = defaultPortfolioData.projects;
+        }
+        return merged;
+      }
+      return defaultPortfolioData;
     } catch {
       return defaultPortfolioData;
     }
