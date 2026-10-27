@@ -1,211 +1,250 @@
-import { motion } from "framer-motion";
-import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, Github } from "lucide-react";
+import Section from "@/components/Section";
+import SectionHeading from "@/components/SectionHeading";
+import SectionReveal from "@/components/SectionReveal";
+import ProjectIcon from "@/components/ProjectIcon";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { usePortfolio } from "@/contexts/PortfolioContext";
+import { usePortfolio, type Project } from "@/contexts/PortfolioContext";
+import { usePointerGlow } from "@/hooks/usePointerGlow";
+import { cn } from "@/lib/utils";
+import logyxpress from "@/assets/images/LogyXpress_logo.png";
+import cricarabia from "@/assets/images/Cric_Arabia.png";
+import cricketgyan from "@/assets/images/cricketgyan_logo.jpg";
+import firesetgo from "@/assets/images/FSG_logo.png";
+import criccross from "@/assets/images/criccross_logo.png";
+import aplus1admin from "@/assets/images/aplus1_admin.png";
+import agency86 from "@/assets/images/86-agency-logo.webp";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.1,
-    },
-  },
+const projectImageMap: Record<string, string> = {
+  logyxpress,
+  cricarabia,
+  "cric 11": cricarabia,
+  "cric11": cricarabia,
+  cricketgyan,
+  firesetgo,
+  eventbooking: firesetgo,
+  criccross,
+  "cric cross": criccross,
+  "a plus one admin": aplus1admin,
+  aplus1admin,
+  "86 agency": agency86,
+  agency86,
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      type: "spring" as const,
-      stiffness: 100,
-      damping: 15,
-    },
-  },
+const badgeTone: Record<string, string> = {
+  Professional: "bg-accent-tint text-foreground",
+  Personal: "bg-secondary text-muted-foreground",
+  Academic: "bg-secondary text-muted-foreground",
+};
+
+interface ProjectCardProps {
+  project: Project;
+  index: number;
+}
+
+/**
+ * A single project card: header band with icon and type badge, description,
+ * highlight chips, tag chips, and always-visible links.
+ */
+const ProjectCard = ({ project, index }: ProjectCardProps) => {
+  const glow = usePointerGlow();
+  const hasLive = project.liveUrl && project.liveUrl !== "#";
+  const hasSource = project.githubUrl && project.githubUrl !== "#";
+
+  return (
+    <motion.li
+      layout
+      initial={{ opacity: 0, y: 16, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.97 }}
+      transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
+      className="group"
+    >
+      <article
+        ref={glow.ref}
+        onPointerMove={glow.onPointerMove}
+        onPointerLeave={glow.onPointerLeave}
+        className="panel panel-hover panel-glow flex h-full flex-col overflow-hidden border-0 bg-surface-2"
+      >
+        {/* Header band — turns indigo on hover, like a highlighted card */}
+        <div className="relative flex items-center justify-between gap-3 bg-primary/10 p-5 transition-colors duration-300 group-hover:bg-primary">
+          <div className="flex items-center gap-3">
+            <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-brand transition-colors duration-300 group-hover:bg-white group-hover:text-brand overflow-hidden shadow-sm">
+              {(() => {
+                const imageSrc =
+                  projectImageMap[project.title.toLowerCase()] ||
+                  projectImageMap[project.title.toLowerCase().replace(/\s+/g, "")] ||
+                  (project as any).image;
+                if (imageSrc) {
+                  return (
+                    <img
+                      src={imageSrc}
+                      alt={`${project.title} logo`}
+                      className="h-full w-full object-contain p-1.5 rounded-full"
+                    />
+                  );
+                }
+                return <ProjectIcon name={project.icon} className="h-6 w-6" />;
+              })()}
+            </span>
+            <div className="flex flex-col">
+              <h3 className="font-display text-lg font-semibold leading-snug text-foreground group-hover:text-white transition-colors duration-300">
+                {project.title}
+              </h3>
+            </div>
+          </div>
+          <span
+            className={cn(
+              "rounded-full px-3 py-1 text-xs font-medium",
+              badgeTone[project.type] ?? badgeTone.Personal
+            )}
+          >
+            {project.type}
+          </span>
+        </div>
+
+        <div className="flex flex-1 flex-col p-5">
+          <div className="flex items-start justify-between gap-2">
+            <p className="sr-only">{project.title}</p>
+            <ArrowUpRight
+              className="ml-auto h-4 w-4 shrink-0 text-muted-foreground transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand"
+              aria-hidden="true"
+            />
+          </div>
+
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            {project.description}
+          </p>
+
+          {project.highlights.length > 0 && (
+            <ul className="mt-4 flex flex-wrap gap-1.5">
+              {project.highlights.map((highlight) => (
+                <li
+                  key={highlight}
+                  className="rounded-lg bg-card px-2.5 py-1 text-xs font-medium text-foreground/85"
+                >
+                  {highlight}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <ul className="mt-4 flex flex-wrap gap-1.5">
+            {project.tags.slice(0, 4).map((tag) => (
+              <li
+                key={tag}
+                className="rounded-md border border-border px-2 py-1 text-xs text-muted-foreground"
+              >
+                {tag}
+              </li>
+            ))}
+            {project.tags.length > 4 && (
+              <li className="rounded-md px-2 py-1 text-xs text-muted-foreground/70">
+                +{project.tags.length - 4}
+              </li>
+            )}
+          </ul>
+
+          {/* Links stay visible: a hover-only overlay is unusable on touch */}
+          <div className="mt-auto flex items-center gap-2 pt-6">
+            {hasLive ? (
+              <Button variant="brand" size="sm" asChild>
+                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                  Live site
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              </Button>
+            ) : (
+              <span className="rounded-full border border-dashed border-border px-3 py-1.5 text-xs text-muted-foreground">
+                Not published
+              </span>
+            )}
+            {hasSource && (
+              <Button variant="outline" size="sm" asChild>
+                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                  <Github className="h-3.5 w-3.5" />
+                  Source
+                </a>
+              </Button>
+            )}
+          </div>
+        </div>
+      </article>
+    </motion.li>
+  );
 };
 
 const Projects = () => {
   const { data } = usePortfolio();
   const { projects, hero } = data;
 
+  const types = useMemo(
+    () => ["All", ...Array.from(new Set(projects.map((project) => project.type)))],
+    [projects]
+  );
+  const [activeType, setActiveType] = useState("All");
+
+  const visibleProjects = useMemo(
+    () =>
+      activeType === "All"
+        ? projects
+        : projects.filter((project) => project.type === activeType),
+    [projects, activeType]
+  );
+
   return (
-    <section id="projects" className="py-16 sm:py-24 bg-background">
-      <div className="container mx-auto px-4 sm:px-6">
-        <motion.div
-          className="max-w-7xl mx-auto"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.div
-            className="text-center mb-10 sm:mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+    <Section id="projects" tone="default">
+      <SectionHeading
+        eyebrow="02 — Selected work"
+        title="Projects I've shipped"
+        description="Production work across logistics, sports, events and fintech — built with React, Next.js and TypeScript, with the state management and API work that real products need."
+        align="center"
+        className="mb-12 sm:mb-16"
+        action={
+          <div
+            role="group"
+            aria-label="Filter projects by type"
+            className="flex flex-wrap justify-center gap-2"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Featured Projects
-            </h2>
-            <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-              Professional projects showcasing React, Next.js, API integration, state management (Redux, Zustand), and real-time features with Socket.IO.
-            </p>
-            <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-4" />
-          </motion.div>
-
-          <motion.div
-            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-          >
-            {projects.map((project) => (
-              <motion.div
-                key={project.title}
-                variants={itemVariants}
-                whileHover={{ y: -8, transition: { type: "spring", stiffness: 300, damping: 20 } }}
-                className="group relative"
+            {types.map((type) => (
+              <button
+                key={type}
+                type="button"
+                aria-pressed={activeType === type}
+                onClick={() => setActiveType(type)}
+                className={cn(
+                  "rounded-full px-5 py-2 text-sm font-medium transition-all duration-300",
+                  activeType === type
+                    ? "bg-accent text-accent-foreground shadow-accent-glow"
+                    : "bg-card text-muted-foreground shadow-card hover:text-foreground"
+                )}
               >
-                <div className="h-full rounded-xl sm:rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10">
-                  {/* Project Image/Icon */}
-                  <div className="aspect-[16/10] bg-gradient-to-br from-muted via-muted/80 to-muted/50 flex items-center justify-center relative overflow-hidden">
-                    <motion.span
-                      className="text-4xl sm:text-5xl md:text-6xl"
-                      whileHover={{ scale: 1.2, rotate: 5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      {project.icon}
-                    </motion.span>
-                    <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-500" />
-                    
-                    {/* Type badge */}
-                    <div className="absolute top-2 sm:top-3 left-2 sm:left-3">
-                      <Badge 
-                        className={`text-xs transition-all duration-300 ${
-                          project.type === "Professional" 
-                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" 
-                            : project.type === "Academic"
-                            ? "bg-secondary text-secondary-foreground"
-                            : "bg-muted text-muted-foreground"
-                        }`}
-                      >
-                        {project.type}
-                      </Badge>
-                    </div>
-
-                    {/* Quick links overlay */}
-                    <motion.div
-                      className="absolute inset-0 flex items-center justify-center gap-2 sm:gap-3 bg-background/90 backdrop-blur-sm"
-                      initial={{ opacity: 0 }}
-                      whileHover={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {project.liveUrl !== "#" && (
-                        <motion.div
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          whileHover={{ scale: 1, opacity: 1 }}
-                          transition={{ delay: 0.1 }}
-                        >
-                          <Button size="sm" variant="default" asChild className="shadow-lg text-xs sm:text-sm">
-                            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                              <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                              Live Demo
-                            </a>
-                          </Button>
-                        </motion.div>
-                      )}
-                      {project.githubUrl !== "#" && (
-                        <motion.div
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          whileHover={{ scale: 1, opacity: 1 }}
-                          transition={{ delay: 0.15 }}
-                        >
-                          <Button size="sm" variant="outline" asChild className="text-xs sm:text-sm">
-                            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                              <Github className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                              Code
-                            </a>
-                          </Button>
-                        </motion.div>
-                      )}
-                    </motion.div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-4 sm:p-5">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="text-base sm:text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-1">
-                        {project.title}
-                      </h3>
-                      <motion.div
-                        whileHover={{ x: 3, y: -3 }}
-                        transition={{ type: "spring", stiffness: 400 }}
-                      >
-                        <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
-                      </motion.div>
-                    </div>
-                    
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-3 leading-relaxed">
-                      {project.description}
-                    </p>
-
-                    {/* Highlights */}
-                    {project.highlights && (
-                      <div className="flex flex-wrap gap-1 sm:gap-1.5 mb-2 sm:mb-3">
-                        {project.highlights.map((highlight) => (
-                          <span
-                            key={highlight}
-                            className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 bg-primary/10 text-primary rounded-full font-medium"
-                          >
-                            {highlight}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Tech tags */}
-                    <div className="flex flex-wrap gap-1 sm:gap-1.5">
-                      {project.tags.slice(0, 4).map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-[10px] sm:text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                      {project.tags.length > 4 && (
-                        <Badge variant="secondary" className="text-[10px] sm:text-xs">
-                          +{project.tags.length - 4}
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+                {type}
+              </button>
             ))}
-          </motion.div>
+          </div>
+        }
+      />
 
-          <motion.div
-            className="text-center mt-8 sm:mt-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-          >
-            <Button variant="outline" size="lg" asChild className="group">
-              <a href={hero.githubUrl} target="_blank" rel="noopener noreferrer">
-                <Github className="mr-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:rotate-12 transition-transform duration-300" />
-                View All Projects on GitHub
-              </a>
-            </Button>
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
+      <motion.ul layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <AnimatePresence mode="popLayout">
+          {visibleProjects.map((project, index) => (
+            <ProjectCard key={project.title} project={project} index={index} />
+          ))}
+        </AnimatePresence>
+      </motion.ul>
+
+      <SectionReveal delay={0.1} className="mt-12 flex justify-center">
+        <Button variant="brand" size="lg" asChild>
+          <a href={hero.githubUrl} target="_blank" rel="noopener noreferrer">
+            <Github className="h-4 w-4" />
+            See everything on GitHub
+          </a>
+        </Button>
+      </SectionReveal>
+    </Section>
   );
 };
 

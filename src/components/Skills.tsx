@@ -1,200 +1,195 @@
+import { Fragment } from "react";
 import { motion } from "framer-motion";
 import { Briefcase, GraduationCap, Award } from "lucide-react";
+import Section from "@/components/Section";
+import SectionHeading from "@/components/SectionHeading";
+import SectionReveal from "@/components/SectionReveal";
+import Period from "@/components/Period";
+import { CurveArrowDown, CurveArrowRight, DashedRing } from "@/components/Decor";
 import { usePortfolio } from "@/contexts/PortfolioContext";
 
 const Skills = () => {
   const { data } = usePortfolio();
   const { skills } = data;
 
+  const skillCategories = [
+    {
+      title: "Programming Languages",
+      items: ["JavaScript", "TypeScript", "SQL"],
+    },
+    {
+      title: "Frontend Frameworks & Libraries",
+      items: [
+        "React.js",
+        "Next.js",
+        "Redux Toolkit",
+        "Zustand",
+        "RTK Query",
+        "Tailwind CSS",
+        "HTML5",
+        "CSS3",
+      ],
+    },
+    {
+      title: "Real-time & API Technologies",
+      items: ["WebSocket", "Agora SDK", "Socket.io", "REST API Integration"],
+    },
+    {
+      title: "Development Tools & Platforms",
+      items: ["Git", "GitHub", "Postman", "Salesforce Supersets", "n8n"],
+    },
+    {
+      title: "Web & Content Management",
+      items: ["WordPress", "SEO Management", "UI/UX Design"],
+    },
+    {
+      title: "AI & Automation",
+      items: [
+        "AI Automation",
+        "Workflow Automation",
+        "OpenAI API",
+        "Google Gemini API",
+        "Prompt Engineering",
+      ],
+    },
+    {
+      title: "AI Development Tools",
+      items: ["Claude Code", "Gemini CLI", "OpenAI Codex", "OpenCode"],
+    },
+    {
+      title: "Backend & Database",
+      items: ["Node.js", "Express.js", "REST APIs", "MongoDB", "JWT Authentication"],
+    },
+  ];
+
   return (
-    <section id="skills" className="py-16 sm:py-24 bg-muted/30">
-      <div className="container mx-auto px-4 sm:px-6">
-        <motion.div
-          className="max-w-6xl mx-auto"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.div
-            className="text-center mb-10 sm:mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Skills & Experience
-            </h2>
-            <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Technologies I work with and my professional journey.
-            </p>
-            <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-4" />
-          </motion.div>
+    <Section id="skills" tone="default">
+      <SectionHeading
+        eyebrow="03 — Skills"
+        title="The stack I reach for"
+        description="A practical toolkit built by shipping real products — daily, in React, TypeScript, and modern AI tooling."
+        align="center"
+        className="mb-12 sm:mb-16"
+      />
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-12 sm:mb-16">
-            {/* Frontend Skills */}
+      {/* ---- Skills by Category ---- */}
+      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        {skillCategories.map((category, categoryIndex) => (
+          <SectionReveal key={category.title} delay={categoryIndex * 0.04}>
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="space-y-4 sm:space-y-6"
+              className="panel panel-hover group relative h-full overflow-hidden p-6"
+              whileHover={{ y: -6 }}
+              transition={{ type: "spring", stiffness: 260, damping: 20 }}
             >
-              <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-4 sm:mb-6">
-                Frontend & Web Development
-              </h3>
-              {skills.frontend.map((skill, index) => (
-                <motion.div
-                  key={skill.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 * index }}
-                  className="space-y-2"
-                >
-                  <div className="flex justify-between text-xs sm:text-sm">
-                    <span className="font-medium text-foreground">{skill.name}</span>
-                    <span className="text-muted-foreground">{skill.level}%</span>
-                  </div>
-                  <div className="h-1.5 sm:h-2 bg-muted rounded-full overflow-hidden">
-                    <motion.div
-                      className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.level}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, delay: 0.2 + 0.1 * index }}
-                    />
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Backend Skills */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="space-y-4 sm:space-y-6"
-            >
-              <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-4 sm:mb-6">
-                Tools & Technologies
-              </h3>
-              {skills.backend.map((skill, index) => (
-                <motion.div
-                  key={skill.name}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 * index }}
-                  className="space-y-2"
-                >
-                  <div className="flex justify-between text-xs sm:text-sm">
-                    <span className="font-medium text-foreground">{skill.name}</span>
-                    <span className="text-muted-foreground">{skill.level}%</span>
-                  </div>
-                  <div className="h-1.5 sm:h-2 bg-muted rounded-full overflow-hidden">
-                    <motion.div
-                      className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.level}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, delay: 0.2 + 0.1 * index }}
-                    />
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Experience & Education */}
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            {/* Experience */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="flex items-center gap-3 mb-6 sm:mb-8">
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+              <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-primary/5 transition-all duration-500 group-hover:scale-150" />
+              <div className="relative">
+                <div className="mb-4 flex items-center gap-3">
+                  <span className="h-px w-6 bg-primary" aria-hidden="true" />
+                  <h3 className="font-display text-base font-semibold text-foreground">
+                    {category.title}
+                  </h3>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-semibold text-foreground">Experience</h3>
-              </div>
-              <div className="space-y-4 sm:space-y-6">
-                {skills.experience.map((exp, index) => (
-                  <motion.div
-                    key={exp.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 * index }}
-                    className="relative pl-5 sm:pl-6 border-l-2 border-border hover:border-primary/50 transition-colors"
-                  >
-                    <div className="absolute -left-[7px] sm:-left-[9px] top-0 w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-muted border-2 border-primary" />
-                    <div className="text-xs sm:text-sm text-primary font-medium mb-1">
-                      {exp.period}
-                    </div>
-                    <h4 className="text-base sm:text-lg font-semibold text-foreground">
-                      {exp.title}
-                    </h4>
-                    <div className="text-muted-foreground text-xs sm:text-sm mb-2">
-                      {exp.company}
-                    </div>
-                    <p className="text-muted-foreground text-xs sm:text-sm">{exp.description}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Education */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <div className="flex items-center gap-3 mb-6 sm:mb-8">
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                <div className="flex flex-wrap gap-2">
+                  {category.items.map((skillName) => (
+                    <span
+                      key={skillName}
+                      className="inline-flex items-center rounded-full border border-border/80 bg-background/70 px-2.5 py-1 text-xs font-medium text-foreground shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-accent-tint hover:text-foreground"
+                    >
+                      {skillName}
+                    </span>
+                  ))}
                 </div>
-                <h3 className="text-xl sm:text-2xl font-semibold text-foreground">Education</h3>
-              </div>
-              <div className="space-y-4 sm:space-y-6">
-                {skills.education.map((edu, index) => (
-                  <motion.div
-                    key={edu.degree}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 * index }}
-                    className="p-4 sm:p-6 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                      <div className="text-xs sm:text-sm text-primary font-medium">
-                        {edu.period}
-                      </div>
-                      <div className="flex items-center gap-1 text-xs sm:text-sm font-semibold text-primary">
-                        <Award className="h-3 w-3 sm:h-4 sm:w-4" />
-                        {edu.grade}
-                      </div>
-                    </div>
-                    <h4 className="text-sm sm:text-lg font-semibold text-foreground">
-                      {edu.degree}
-                    </h4>
-                    <div className="text-muted-foreground text-xs sm:text-sm">
-                      {edu.institution}
-                    </div>
-                  </motion.div>
-                ))}
               </div>
             </motion.div>
-          </div>
-        </motion.div>
+          </SectionReveal>
+        ))}
       </div>
-    </section>
+
+      {/* ---- Experience, as working-process steps ---- */}
+      <div className="mt-16 sm:mt-20">
+        <SectionReveal>
+          <h3 className="text-center font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            Experience
+          </h3>
+        </SectionReveal>
+
+        <div className="mt-10 flex flex-col items-center gap-8 lg:flex-row lg:items-start lg:justify-center lg:gap-3">
+          {skills.experience.map((exp, index) => (
+            <Fragment key={exp.title}>
+              <SectionReveal
+                delay={index * 0.1}
+                className="flex w-full max-w-sm flex-col items-center text-center lg:w-auto lg:max-w-[22rem] lg:flex-1"
+              >
+                {/* Indigo icon circle inside a dashed yellow ring */}
+                <div className="relative h-[150px] w-[150px] shrink-0">
+                  <DashedRing className="absolute inset-0 text-accent" />
+                  <span className="absolute inset-[15px] inline-flex items-center justify-center rounded-full bg-primary text-white">
+                    <Briefcase className="h-8 w-8" aria-hidden="true" />
+                  </span>
+                </div>
+
+                <p className="mt-6 text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                  <Period period={exp.period} />
+                </p>
+                <h4 className="mt-2 font-display text-2xl font-semibold leading-snug text-foreground">
+                  {exp.title}
+                </h4>
+                <p className="mt-1 text-sm font-semibold text-brand">{exp.company}</p>
+                <p className="mt-3 max-w-xs text-[15px] leading-relaxed text-muted-foreground lg:max-w-none">
+                  {exp.description}
+                </p>
+              </SectionReveal>
+
+              {/* Hand-drawn arrows between steps: right on desktop, down on mobile */}
+              {index < skills.experience.length - 1 && (
+                <>
+                  <CurveArrowRight
+                    className="hidden w-24 shrink-0 pt-16 text-accent lg:block"
+                  />
+                  <CurveArrowDown className="-my-4 w-8 text-accent lg:hidden" />
+                </>
+              )}
+            </Fragment>
+          ))}
+        </div>
+      </div>
+
+      {/* ---- Education ---- */}
+      <div className="mt-16 sm:mt-20">
+        <SectionReveal>
+          <div className="flex items-center justify-center gap-3">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
+              <GraduationCap className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <h3 className="font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              Education
+            </h3>
+          </div>
+        </SectionReveal>
+
+        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {skills.education.map((edu, index) => (
+            <SectionReveal key={edu.degree} delay={index * 0.06}>
+              <li className="panel panel-hover h-full p-5">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                    <Period period={edu.period} />
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-tint px-2.5 py-1 text-xs font-medium text-foreground">
+                    <Award className="h-3 w-3 text-brand" aria-hidden="true" />
+                    {edu.grade}
+                  </span>
+                </div>
+                <h4 className="mt-3 text-[15px] font-semibold leading-snug text-foreground">
+                  {edu.degree}
+                </h4>
+                <p className="mt-1 text-sm text-muted-foreground">{edu.institution}</p>
+              </li>
+            </SectionReveal>
+          ))}
+        </ul>
+      </div>
+    </Section>
   );
 };
 

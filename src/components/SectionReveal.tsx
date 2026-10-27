@@ -1,49 +1,68 @@
-import { motion, useInView } from "framer-motion";
-import { useRef, ReactNode } from "react";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { cn } from "@/lib/utils";
+import type { ReactNode } from "react";
 
 interface SectionRevealProps {
   children: ReactNode;
   className?: string;
+  /** Seconds to wait before revealing. Use small increments for stagger. */
   delay?: number;
-  direction?: "up" | "down" | "left" | "right";
+  /** Direction the element travels in from. */
+  from?: "up" | "down" | "left" | "right" | "none";
+  /** Distance in pixels. */
+  distance?: number;
+  /** Replay the animation each time it scrolls into view. */
+  repeat?: boolean;
 }
 
-const SectionReveal = ({ 
-  children, 
-  className = "", 
-  delay = 0,
-  direction = "up" 
-}: SectionRevealProps) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+const offsets = {
+  up: { x: 0, y: 1 },
+  down: { x: 0, y: -1 },
+  left: { x: 1, y: 0 },
+  right: { x: -1, y: 0 },
+  none: { x: 0, y: 0 },
+};
 
-  const directionVariants = {
-    up: { y: 60, x: 0 },
-    down: { y: -60, x: 0 },
-    left: { y: 0, x: 60 },
-    right: { y: 0, x: -60 },
+/**
+ * Scroll-triggered entrance. Respects prefers-reduced-motion by dropping the
+ * transform entirely and only fading.
+ */
+const SectionReveal = ({
+  children,
+  className,
+  delay = 0,
+  from = "up",
+  distance = 24,
+  repeat = false,
+}: SectionRevealProps) => {
+  const prefersReducedMotion = useReducedMotion();
+  const { x, y } = offsets[from];
+
+  const variants: Variants = {
+    hidden: {
+      opacity: 0,
+      x: prefersReducedMotion ? 0 : x * distance,
+      y: prefersReducedMotion ? 0 : y * distance,
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: {
+        duration: 0.65,
+        delay: prefersReducedMotion ? 0 : delay,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
   };
 
   return (
     <motion.div
-      ref={ref}
-      className={className}
-      initial={{ 
-        opacity: 0, 
-        ...directionVariants[direction],
-        filter: "blur(10px)"
-      }}
-      animate={isInView ? { 
-        opacity: 1, 
-        y: 0, 
-        x: 0,
-        filter: "blur(0px)"
-      } : {}}
-      transition={{ 
-        duration: 0.8, 
-        delay,
-        ease: [0.25, 0.4, 0.25, 1]
-      }}
+      className={cn(className)}
+      variants={variants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: !repeat, amount: 0.15, margin: "0px 0px -80px 0px" }}
     >
       {children}
     </motion.div>

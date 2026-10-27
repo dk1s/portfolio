@@ -1,91 +1,41 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
-import Testimonials from "@/components/Testimonials";
+import Credentials from "@/components/Credentials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import SecretAdminButton from "@/components/SecretAdminButton";
 
-const PageLoader = () => {
-  return (
-    <motion.div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <motion.div className="flex flex-col items-center gap-6">
-        <motion.div
-          className="text-4xl md:text-6xl font-bold text-foreground"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          Deepak<span className="text-primary">.</span>Kumar
-        </motion.div>
-        
-        <motion.div
-          className="flex gap-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          {[0, 1, 2].map((i) => (
-            <motion.div
-              key={i}
-              className="w-3 h-3 rounded-full bg-primary"
-              animate={{
-                scale: [1, 1.4, 1],
-                opacity: [0.4, 1, 0.4],
-              }}
-              transition={{
-                duration: 1,
-                repeat: Infinity,
-                delay: i * 0.15,
-              }}
-            />
-          ))}
-        </motion.div>
-      </motion.div>
-    </motion.div>
-  );
-};
-
+/**
+ * Single-page portfolio. The previous version held a 2s full-screen loader
+ * before revealing content — a delay that reads as a slow site. Content now
+ * renders immediately and each section animates in on scroll instead.
+ */
 const Index = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <div className="min-h-screen bg-background">
-      <AnimatePresence mode="wait">
-        {isLoading && <PageLoader key="loader" />}
-      </AnimatePresence>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isLoading ? 0 : 1 }}
-        transition={{ duration: 0.5 }}
+      <a
+        href="#about"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[70] focus:rounded-full focus:bg-primary focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-primary-foreground"
       >
-        <Navbar />
+        Skip to content
+      </a>
+
+      <Navbar />
+
+      <main>
         <Hero />
         <About />
         <Projects />
         <Skills />
-        <Testimonials />
+        <Credentials />
         <Contact />
-        <Footer />
-        <SecretAdminButton />
-      </motion.div>
+      </main>
+
+      <Footer />
+      <SecretAdminButton />
     </div>
   );
 };

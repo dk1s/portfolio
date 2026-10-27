@@ -1,156 +1,201 @@
-import { motion } from "framer-motion";
-import { Code2, Lightbulb, Brain, Target } from "lucide-react";
+import { ArrowRight, Brain, Code2, Lightbulb, Target, Check, type LucideIcon } from "lucide-react";
+import Section from "@/components/Section";
+import SectionHeading from "@/components/SectionHeading";
+import SectionReveal from "@/components/SectionReveal";
+import {
+  DashedRing,
+  OutlineCircle,
+  PlayTriangles,
+  SolidTriangle,
+} from "@/components/Decor";
 import profileImage from "@/assets/deepak-profile.jpg";
 import { usePortfolio } from "@/contexts/PortfolioContext";
+import { cn } from "@/lib/utils";
 
-const iconMap: Record<string, any> = {
+const RESUME_HREF = "/DeepakKumar_Resume.pdf";
+
+const valueIcons: Record<string, LucideIcon> = {
   "Quick Learner": Brain,
   "Clean Code": Code2,
   "Problem Solver": Lightbulb,
   "Goal-Oriented": Target,
 };
 
+/** Spec info card: 12px radius, icon in the left gutter, bold title + 2 lines. */
+const InfoCard = ({
+  label,
+  value,
+  tint,
+}: {
+  label: string;
+  value: string;
+  tint: "peach" | "lavender";
+}) => (
+  <div
+    className={cn(
+      "flex gap-5 rounded-lg p-6",
+      tint === "peach" ? "bg-accent-tint" : "bg-secondary"
+    )}
+  >
+    <span
+      className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brand/30 text-brand"
+      aria-hidden="true"
+    >
+      <ArrowRight className="h-4 w-4" />
+    </span>
+    <div className="min-w-0">
+      <p className="text-lg font-semibold leading-snug text-foreground">{label}</p>
+      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{value}</p>
+    </div>
+  </div>
+);
+
 const About = () => {
   const { data } = usePortfolio();
-  const { about, values, certifications } = data;
+  const { about, values, hero, skills, contact } = data;
+
+  const primaryEducation = skills.education[0];
+  const primaryExperience = skills.experience[0];
+
+  const facts = [
+    { label: "Role", value: `${hero.role} at ${hero.company}` },
+    { label: "Experience", value: primaryExperience?.period ?? "" },
+    { label: "Location", value: contact.location },
+    { label: "Education", value: primaryEducation?.degree ?? "" },
+    { label: "Languages", value: about.languages.join(" · ") },
+  ];
 
   return (
-    <section id="about" className="py-16 sm:py-24 bg-muted/30">
-      <div className="container mx-auto px-4 sm:px-6">
-        <motion.div
-          className="max-w-6xl mx-auto"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.div
-            className="text-center mb-10 sm:mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
-              About Me
-            </h2>
-            <div className="w-20 h-1 bg-primary mx-auto rounded-full" />
-          </motion.div>
+    <Section id="about" tone="raised" className="topo-lines-soft overflow-hidden">
+      <div className="grid gap-14 lg:grid-cols-12 lg:gap-12">
+        {/* ---- Portrait in a yellow circle, with hand-drawn accents ---- */}
+        <SectionReveal from="left" className="lg:col-span-5">
+          <div className="relative mx-auto aspect-square w-[min(100%,24rem)]">
+            {/* Offset indigo arcs around the disc */}
+            <div
+              className="absolute -inset-4 rounded-full border-[5px] border-brand border-r-transparent border-t-transparent"
+              aria-hidden="true"
+            />
+            <DashedRing className="absolute -inset-9 text-brand/70" />
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-12 sm:mb-16">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="order-2 lg:order-1"
-            >
-              <div className="relative max-w-sm mx-auto lg:max-w-none">
-                <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 p-3 sm:p-4 border border-primary/10 overflow-hidden">
-                  <img
-                    src={profileImage}
-                    alt="Deepak Kumar"
-                    className="w-full h-full object-cover rounded-xl"
-                  />
-                </div>
-                {/* Decorative elements */}
-                <div className="absolute -top-4 -right-4 w-16 sm:w-24 h-16 sm:h-24 bg-primary/10 rounded-full blur-2xl" />
-                <div className="absolute -bottom-4 -left-4 w-20 sm:w-32 h-20 sm:h-32 bg-primary/5 rounded-full blur-2xl" />
-              </div>
-            </motion.div>
+            {/* Yellow disc + circular photo */}
+            <div className="absolute inset-0 rounded-full bg-accent" aria-hidden="true" />
+            <img
+              src={profileImage}
+              alt={`${hero.name}, ${hero.role}`}
+              width={1000}
+              height={729}
+              className="absolute inset-2 h-[calc(100%-1rem)] w-[calc(100%-1rem)] rounded-full object-cover"
+              loading="lazy"
+            />
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="space-y-4 sm:space-y-6 order-1 lg:order-2"
-            >
-              {about.bio.map((paragraph, index) => (
-                <p key={index} className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-                  {paragraph.includes("Software Developer") ? (
-                    <>
-                      I'm a <span className="text-primary font-semibold">Software Developer</span> at 86 Agency, 
-                      where I build responsive web applications using React, Next.js, TypeScript, and Tailwind CSS. 
-                      I've contributed to projects like <span className="text-foreground font-medium">Logyxpress, CricArabia, and Cric 11 (Fantasy)</span>.
-                    </>
-                  ) : paragraph.includes("B.Tech") ? (
-                    <>
-                      With a <span className="text-foreground font-medium">B.Tech in Electronics & Communication Engineering</span> from 
-                      Bihar Engineering University (7.71 CGPA), I bring a strong analytical foundation to software development.
-                      I'm proficient in state management with Redux and Zustand, and I love building CRUD applications.
-                    </>
-                  ) : (
-                    paragraph
-                  )}
+            {/* Scattered decorations */}
+            <OutlineCircle className="absolute -left-8 -top-4 hidden w-10 text-brand sm:block" />
+            <OutlineCircle className="absolute -right-6 bottom-16 hidden w-7 text-accent sm:block" />
+            <SolidTriangle className="absolute -top-8 right-16 hidden w-5 rotate-[18deg] text-accent sm:block" />
+            <SolidTriangle className="absolute bottom-4 -right-10 hidden w-4 -rotate-12 text-accent sm:block" />
+            <PlayTriangles className="absolute -bottom-10 left-8 hidden w-20 text-accent sm:block" />
+          </div>
+        </SectionReveal>
+
+        {/* ---- Copy, info cards and the CV button ---- */}
+        <div className="lg:col-span-7">
+          <SectionHeading
+            eyebrow="01 — About"
+            title="Frontend developer focused on shipping"
+            description="I care about the parts of engineering that decide whether a product actually works: clean architecture, predictable state, and an interface that holds up on any screen."
+            className="mb-8 sm:mb-10"
+          />
+
+          <div className="space-y-5">
+            {about.bio.map((paragraph, index) => (
+              <SectionReveal key={index} delay={index * 0.06}>
+                <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
+                  {paragraph}
                 </p>
-              ))}
-              
-              <div className="flex flex-wrap gap-2 pt-2 sm:pt-4">
-                {about.languages.map((lang, index) => (
-                  <span key={index} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs sm:text-sm">
-                    {lang}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
+              </SectionReveal>
+            ))}
           </div>
 
-          {/* Values */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-12 sm:mb-16">
-            {values.map((value, index) => {
-              const IconComponent = iconMap[value.title] || Brain;
-              return (
-                <motion.div
-                  key={value.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 * index }}
-                  whileHover={{ y: -5 }}
-                  className="p-4 sm:p-6 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors group"
-                >
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-primary/20 transition-colors">
-                    <IconComponent className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                  </div>
-                  <h3 className="text-sm sm:text-lg font-semibold text-foreground mb-1 sm:mb-2">
-                    {value.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3">{value.description}</p>
-                </motion.div>
-              );
-            })}
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            {facts.map((fact, index) => (
+              <SectionReveal key={fact.label} delay={index * 0.05}>
+                <InfoCard
+                  label={fact.label}
+                  value={fact.value}
+                  tint={index % 2 === 0 ? "peach" : "lavender"}
+                />
+              </SectionReveal>
+            ))}
           </div>
 
-          {/* Certifications */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h3 className="text-xl sm:text-2xl font-semibold text-foreground text-center mb-6 sm:mb-8">
-              Certifications & Training
-            </h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-              {certifications.map((cert, index) => (
-                <motion.div
-                  key={cert.name}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.05 * index }}
-                  className="p-3 sm:p-4 rounded-lg bg-card border border-border hover:border-primary/30 transition-all hover:shadow-lg"
-                >
-                  <div className="text-xs sm:text-sm font-medium text-foreground">{cert.name}</div>
-                  <div className="text-xs text-muted-foreground mt-1">By: {cert.issuer}</div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </motion.div>
+          <SectionReveal delay={0.15} className="mt-8">
+            <a
+              href={RESUME_HREF}
+              download="DeepakKumar_Resume.pdf"
+              className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-9 py-3.5 text-base font-medium text-accent-foreground shadow-accent-glow transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-dark"
+            >
+              Download CV
+              <ArrowRight
+                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
+            </a>
+          </SectionReveal>
+        </div>
       </div>
-    </section>
+
+      {/* ---- What I focus on ---- */}
+      <div className="mt-16 sm:mt-20">
+        <SectionReveal>
+          <h3 className="eyebrow">What I focus on</h3>
+        </SectionReveal>
+        <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {about.focus.map((item, index) => (
+            <SectionReveal key={item} delay={index * 0.05}>
+              <li className="flex items-start gap-2.5 rounded-lg bg-card p-4 text-sm text-foreground sm:text-base">
+                <Check
+                  className="mt-0.5 h-4 w-4 shrink-0 text-brand"
+                  strokeWidth={2.5}
+                  aria-hidden="true"
+                />
+                <span>{item}</span>
+              </li>
+            </SectionReveal>
+          ))}
+        </ul>
+      </div>
+
+      {/* ---- How I work ---- */}
+      <div className="mt-14 sm:mt-20">
+        <SectionReveal>
+          <h3 className="font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            How I work
+          </h3>
+        </SectionReveal>
+
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {values.map((value, index) => {
+            const Icon = valueIcons[value.title] ?? Brain;
+            return (
+              <SectionReveal key={value.title} delay={index * 0.07}>
+                <article className="panel panel-hover group h-full p-6">
+                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-brand transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <h4 className="mt-5 font-display text-lg font-semibold text-foreground">
+                    {value.title}
+                  </h4>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {value.description}
+                  </p>
+                </article>
+              </SectionReveal>
+            );
+          })}
+        </div>
+      </div>
+    </Section>
   );
 };
 
